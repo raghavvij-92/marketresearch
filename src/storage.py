@@ -70,6 +70,24 @@ class Storage:
         except sqlite3.Error as exc:
             logger.warning("failed to persist analysis for %s: %s", result.symbol, exc)
 
+    def latest_results(self) -> List[Dict[str, Any]]:
+        """Most recent stored analysis per symbol, best score first (for the web UI)."""
+        with self._connect() as conn:
+            rows = conn.execute(
+                """
+                SELECT payload FROM analysis_history a
+                WHERE id = (SELECT MAX(id) FROM analysis_history b WHERE b.symbol = a.symbol)
+                ORDER BY sentiment_score DESC
+                """
+            ).fetchall()
+        results: List[Dict[str, Any]] = []
+        for row in rows:
+            try:
+                results.append(json.loads(row["payload"]))
+            except (json.JSONDecodeError, TypeError):
+                continue
+        return results
+
     def recent_for_symbol(self, symbol: str, limit: int = 10) -> List[Dict[str, Any]]:
         with self._connect() as conn:
             rows = conn.execute(

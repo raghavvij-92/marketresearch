@@ -76,6 +76,14 @@ python main.py --no-notify              # don't push, just write reports
 
 Reports land in `reports/<date>/`, the latest digest is mirrored to `reports/latest.md`, and every result is stored in `data/analysis_history.db` (SQLite) for later review/backtesting.
 
+### Web dashboard
+
+```bash
+python webui.py            # → http://127.0.0.1:8000
+```
+
+A zero-dependency (stdlib-only) local dashboard: live market context (indices, India VIX, FII/DII flows), the latest research note per stock with signal pills, score meters and trade plans, plus a **Run analysis** button that executes the full pipeline in the background and streams its log to the page. Use `--port` / `--host` to change the bind address.
+
 ---
 
 ## Architecture
@@ -103,6 +111,7 @@ Design principles carried over from the reference project:
 
 ```
 main.py                     CLI orchestrator
+webui.py                    local web dashboard (stdlib http.server)
 src/config.py               env-driven configuration
 src/symbols.py              NSE/BSE/index symbol normalisation
 src/data_provider/
