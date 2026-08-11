@@ -1,0 +1,7 @@
+# Core
+pandas>=2.0
+numpy>=1.24
+requests>=2.31
+yfinance>=0.2.40
+feedparser>=6.0
+python-dotenv>=1.0
