@@ -105,6 +105,13 @@ body.seek *,body.seek *::before,body.seek *::after{
 @keyframes rise{from{transform:translateY(0)}to{transform:translateY(-2400px)}}
 .balloon-sway{animation-name:sway;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-direction:alternate}
 @keyframes sway{from{transform:translateX(-26px) rotate(-4deg)}to{transform:translateX(26px) rotate(4deg)}}
+.balloon-body.soft{
+  /* watercolour balloons: matte, no hard shine, no drop shadow */
+  background:
+    radial-gradient(46% 40% at 34% 28%, rgba(255,255,255,.72) 0%, rgba(255,255,255,0) 72%),
+    var(--bc);
+  filter:blur(.4px);
+}
 .balloon-body{
   width:var(--bw);height:calc(var(--bw)*1.19);
   border-radius:50% 50% 50% 50% / 44% 44% 58% 58%;
@@ -130,6 +137,19 @@ body.seek *,body.seek *::before,body.seek *::after{
   8%{opacity:.85}
   92%{opacity:.85}
   100%{transform:translate(var(--dx),2080px) rotate(760deg);opacity:0}
+}
+
+/* meadow decor motion: clothes swing, stems lean in a breeze, butterflies
+   wander and beat their wings */
+@keyframes swing  {from{transform:rotate(-2.2deg)} to{transform:rotate(2.2deg)}}
+@keyframes breeze {from{transform:rotate(-2.6deg)} to{transform:rotate(2.6deg)}}
+@keyframes flap   {from{transform:scaleX(.42)}     to{transform:scaleX(1)}}
+@keyframes flutter{
+  0%  {transform:translate(0,0)}
+  25% {transform:translate(120px,-70px)}
+  50% {transform:translate(240px,20px)}
+  75% {transform:translate(110px,90px)}
+  100%{transform:translate(0,0)}
 }
 
 /* ---------- gold frame -------------------------------------- */
@@ -216,6 +236,8 @@ body.seek *,body.seek *::before,body.seek *::after{
 .venue-line{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:42px;line-height:1.62;color:var(--ink-soft)}
 
 /* question-mark scene */
+.qfeet{line-height:0}
+.qfeet svg{display:block}
 .qwrap{display:flex;align-items:flex-end;justify-content:center;gap:70px}
 .qmark{font-family:'Parisienne',cursive;font-size:196px;line-height:1;color:var(--gold);
   text-shadow:0 10px 26px rgba(var(--wash-2),.30)}
@@ -338,6 +360,26 @@ body.seek *,body.seek *::before,body.seek *::after{
         <div class="cap" style="color:var(--accent-pink)">Pink?</div>
       </div>
       <div class="qmark pop" id="b2">?</div>
+      <div class="qfeet pop" id="b2f" hidden>
+        <svg width="252" height="240" viewBox="0 0 210 200">
+          <g transform="translate(66,116) rotate(-13)" style="fill:var(--accent-pink)">
+            <path d="M -21 -8 C -28 6 -26 28 -17 41 C -10 51 11 51 17 41 C 26 28 28 6 21 -8 C 13 -17 -13 -17 -21 -8 Z"/>
+            <ellipse cx="-17" cy="-24" rx="7.4" ry="8.6"/>
+            <ellipse cx="-3.5" cy="-30" rx="6.6" ry="7.8"/>
+            <ellipse cx="9" cy="-29" rx="5.8" ry="7"/>
+            <ellipse cx="19" cy="-23" rx="5" ry="6.2"/>
+            <ellipse cx="27" cy="-14" rx="4.2" ry="5.4"/>
+          </g>
+          <g transform="translate(146,84) rotate(13) scale(-1,1)" style="fill:var(--accent-blue)">
+            <path d="M -21 -8 C -28 6 -26 28 -17 41 C -10 51 11 51 17 41 C 26 28 28 6 21 -8 C 13 -17 -13 -17 -21 -8 Z"/>
+            <ellipse cx="-17" cy="-24" rx="7.4" ry="8.6"/>
+            <ellipse cx="-3.5" cy="-30" rx="6.6" ry="7.8"/>
+            <ellipse cx="9" cy="-29" rx="5.8" ry="7"/>
+            <ellipse cx="19" cy="-23" rx="5" ry="6.2"/>
+            <ellipse cx="27" cy="-14" rx="4.2" ry="5.4"/>
+          </g>
+        </svg>
+      </div>
       <div class="qbal pop" id="b3">
         <div class="bob" style="animation-delay:-1.9s">
           <div class="balloon-body" style="--bw:180px;--bc:var(--bal-blue)"></div>
@@ -565,6 +607,39 @@ const THEMES = {
     berry: '#e3cf9c', tie: '#d8cfe2', knot: '#bfb3cd'
   },
 
+  /* The watercolour reference: warm cream and apricot with a mint field,
+     a clothesline of baby clothes overhead and a meadow underfoot. This one
+     also carries its own decorative layer — see DECOR below — and drops the
+     gold frame, because the botanicals do that job instead. */
+  'meadow': {
+    label: 'Watercolour Meadow',
+    decor: 'meadow',
+    frame: false,
+    css: {
+      '--paper-1':'#fdf7ee','--paper-mid':'#fcf0e2','--paper-2':'#f7ecdd','--paper-hi':'#fffaf2',
+      '--wash-1':'246,206,168','--wash-1-a':'.52',   /* apricot, upper middle */
+      '--wash-2':'198,224,196','--wash-2-a':'.46',   /* mint field, lower     */
+      '--wash-3':'236,206,214','--wash-3-a':'.34',   /* blush                 */
+      '--ink':'#5b4a40','--ink-soft':'#836e60',
+      '--gold':'#d3a468','--gold-soft':'#f6e0ac','--label':'#a58a6e',
+      '--scrim':'255,250,242','--scrim-a1':'.90','--scrim-a2':'.70',
+      '--vig':'150,120,90','--vig-a':'.07',
+      '--curtain':'#fdf6ec','--glow':'255,232,198',
+      '--accent-pink':'#d9909a','--accent-blue':'#8aa9cc',
+      '--bal-pink':'#f4c3c8','--bal-blue':'#b7cee4',
+      '--string':'rgba(150,126,102,.38)',
+      '--photo-tint':'rgba(240,190,140,.14)'
+    },
+    balloons: ['#bcd4e8','#f6ded0','#f3c4c4','#fbf2e6','#e0d0ea','#f7e3b4'],
+    petals:   ['#f2c6cc','#bcd4e8','#f7e0b0','#e2d2ec','#fdf3e6'],
+    confetti: ['#c39a6f','#e0c193','#f3c4c4','#bcd4e8','#f7e3b4','#fdf5ea','#ffffff','#cfe0c4'],
+    weights:  [3,2,3,3,2,1,1,2],
+    stars:    ['#e6c88e','#f4e2b4','#f2c9cd','#c2d8ea','#fffaf0'],
+    leaves:   ['#9db98f','#87a87c','#b0c9a3','#93b489','#c0d3b4'],
+    blooms:   ['#f2b9c2','#aac6e6','#fff6ea','#f7dfa0','#dcc6ec'],
+    berry: '#e8c58e', tie: '#dfcbaa', knot: '#c6ab84'
+  },
+
   'midnight-gold': {
     label: 'Midnight & Gold',
     css: {
@@ -597,11 +672,11 @@ const THEMES = {
   }
 };
 
-/* Blue & Pink is the palette Simran chose, so it is what you get without a
-   query string. The others stay available. */
+/* Watercolour Meadow is the look Simran chose, so it is what you get without
+   a query string. The others stay available. */
 const THEME_KEY = (function(){
   const q = new URLSearchParams(location.search).get('theme');
-  return (q && THEMES[q]) ? q : 'blue-pink';
+  return (q && THEMES[q]) ? q : 'meadow';
 })();
 const TH = THEMES[THEME_KEY];
 for (const k in TH.css) document.documentElement.style.setProperty(k, TH.css[k]);
@@ -656,7 +731,7 @@ for(let i=0;i<9;i++){
   swayEl.className='balloon-sway';
   swayEl.style.cssText='animation-duration:'+rr(3.4,6.2)+'s;animation-delay:'+(-rr(0,4))+'s;position:relative';
   const b = document.createElement('div');
-  b.className='balloon-body';
+  b.className = 'balloon-body' + (TH.decor === 'meadow' ? ' soft' : '');
   b.style.cssText='--bw:'+w+'px;--bc:'+BAL[i%BAL.length];
   const str = document.createElement('div');
   str.className='balloon-string';
@@ -676,8 +751,174 @@ for(let i=0;i<26;i++){
   bg.appendChild(p);
 }
 
+/* ---- clothesline, meadow and butterflies (meadow theme only) --------
+   The reference frames the page with botanicals rather than a rule, so this
+   decorative layer replaces the gold frame when it is switched on. ----- */
+if (TH.decor === 'meadow') (function(){
+  const sky = svgEl('svg',{width:1080,height:1920,viewBox:'0 0 1080 1920'});
+  sky.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none';
+  bg.appendChild(sky);
+
+  /* ---- the line itself, with a gentle sag ---- */
+  const line = svgEl('path',{d:'M -30 196 Q 540 128 1110 188',fill:'none',
+                             stroke:'#c9a87e','stroke-width':3,'stroke-linecap':'round',opacity:.85});
+  line.style.cssText='animation:fade 1.4s ease-out .35s both';
+  sky.appendChild(line);
+
+  /* height of that curve at a given x, so the hangers actually hang from it */
+  function lineY(x){
+    const t = (x + 30) / 1140;
+    return (1-t)*(1-t)*196 + 2*(1-t)*t*128 + t*t*188;
+  }
+
+  function hanger(g){
+    g.appendChild(svgEl('path',{d:'M 0 0 C 0 -9 -8 -9 -8 -16 C -8 -22 0 -24 3 -19',
+                                fill:'none',stroke:'#bf9a72',
+                                'stroke-width':2.6,'stroke-linecap':'round'}));
+    g.appendChild(svgEl('path',{d:'M 0 1 L -40 26 L 40 26 Z M -40 26 L 40 26',
+                                fill:'none',stroke:'#bf9a72','stroke-width':2.6,
+                                'stroke-linejoin':'round','stroke-linecap':'round'}));
+  }
+
+  const GARMENTS = [
+    { x: 296, delay: 0.55, fill:'#f3f7fa', trim:'#a9c6de', kind:'onesie' },
+    { x: 548, delay: 0.75, fill:'#fbe6da', trim:'#d8a98d', kind:'dress'  },
+    { x: 800, delay: 0.95, fill:'#fdf3e6', trim:'#c9a87e', kind:'booties'}
+  ];
+
+  GARMENTS.forEach(function(gm, i){
+    const outer = svgEl('g',{transform:'translate('+gm.x+','+(lineY(gm.x)+2)+')'});
+    const swing = svgEl('g',{});
+    swing.style.cssText = 'transform-box:fill-box;transform-origin:50% 0%;'+
+      'animation:swing '+(4.6+i*0.7)+'s ease-in-out '+(-i*1.3)+'s infinite alternate';
+    const inn = svgEl('g',{});
+    inn.style.cssText = 'transform-box:fill-box;transform-origin:50% 0%;'+
+      'animation:pop .9s cubic-bezier(.2,1.2,.35,1) '+gm.delay+'s both';
+    /* the artwork is drawn at unit size and scaled here, so the scale cannot
+       fight the pop animation's transform */
+    const art = svgEl('g',{transform:'scale(1.5)'});
+    inn.appendChild(art);
+    hanger(art);
+
+    if (gm.kind === 'onesie'){
+      art.appendChild(svgEl('path',{d:'M -30 26 L -48 46 L -34 60 L -22 50 L -22 112 Q -22 122 -12 122 L 12 122 Q 22 122 22 112 L 22 50 L 34 60 L 48 46 L 30 26 Q 15 34 0 34 Q -15 34 -30 26 Z',
+                                    fill:gm.fill,stroke:gm.trim,'stroke-width':1.6,'stroke-linejoin':'round'}));
+      for(let k=0;k<3;k++)
+        art.appendChild(svgEl('rect',{x:-21,y:62+k*16,width:42,height:5,rx:2.5,fill:gm.trim,opacity:.55}));
+      for(let k=0;k<3;k++)
+        art.appendChild(svgEl('circle',{cx:14,cy:44+k*13,r:2.6,fill:gm.trim,opacity:.85}));
+    } else if (gm.kind === 'dress'){
+      art.appendChild(svgEl('path',{d:'M -28 26 L -46 46 L -32 60 L -21 49 L -40 128 Q 0 142 40 128 L 21 49 L 32 60 L 46 46 L 28 26 Q 14 34 0 34 Q -14 34 -28 26 Z',
+                                    fill:gm.fill,stroke:gm.trim,'stroke-width':1.6,'stroke-linejoin':'round'}));
+      art.appendChild(svgEl('ellipse',{cx:0,cy:33,rx:17,ry:8,fill:'none',stroke:gm.trim,'stroke-width':1.5,opacity:.9}));
+      for(let k=0;k<9;k++){
+        const fx = -26 + (k%5)*13, fy = 62 + Math.floor(k/5)*26;
+        art.appendChild(svgEl('circle',{cx:fx,cy:fy,r:3.1,fill:gm.trim,opacity:.5}));
+      }
+      for(let k=0;k<4;k++)
+        art.appendChild(svgEl('circle',{cx:0,cy:46+k*13,r:2.4,fill:gm.trim,opacity:.85}));
+    } else {
+      const bootie='M 0 0 Q -13 0 -13 13 L -13 34 Q -13 42 -3 42 L 24 42 Q 33 42 31 33 Q 29 24 16 20 Q 4 15 3 0 Z';
+      [[-34,34],[10,40]].forEach(function(pos,k){
+        const b = svgEl('g',{transform:'translate('+pos[0]+','+pos[1]+') scale('+(k?-1:1)+',1)'});
+        b.appendChild(svgEl('path',{d:bootie,fill:gm.fill,stroke:gm.trim,'stroke-width':1.6,'stroke-linejoin':'round'}));
+        b.appendChild(svgEl('path',{d:'M -13 14 L 3 14',stroke:gm.trim,'stroke-width':1.5}));
+        art.appendChild(b);
+      });
+      art.appendChild(svgEl('path',{d:'M -30 26 Q 0 40 30 26',fill:'none',stroke:gm.trim,'stroke-width':1.6}));
+    }
+    swing.appendChild(inn); outer.appendChild(swing); sky.appendChild(outer);
+  });
+
+  /* ---- the meadow along the bottom edge ----
+     Two passes: a pale, short, dense layer behind, then taller and more
+     saturated stems in front. One even row of identical stems reads as a
+     fence, so height, lean, colour and spacing all vary, and the front layer
+     clusters rather than spreading evenly. */
+  const meadow = svgEl('g',{});
+  sky.appendChild(meadow);
+  const GREENS = TH.leaves;
+  const BLOOMS = TH.blooms;
+
+  /* a soft band of green so the meadow has mass, not just outlines */
+  const band = svgEl('ellipse',{cx:540,cy:1960,rx:760,ry:180,
+                                fill:GREENS[2],opacity:.30});
+  band.style.filter = 'blur(46px)';
+  meadow.appendChild(band);
+
+  function stem(x, h, depth, colIdx, bloom){
+    const anchor = svgEl('g',{transform:'translate('+x+',1934)'});
+    const g = svgEl('g',{});
+    g.style.cssText = 'transform-box:fill-box;transform-origin:50% 100%;'+
+      'animation:breeze '+rr(3.4,6.8)+'s ease-in-out '+(-rr(0,6))+'s infinite alternate';
+    anchor.appendChild(g);
+    const lean = rr(-11,11) * (0.5 + depth);
+    const green = GREENS[colIdx % GREENS.length];
+    g.appendChild(svgEl('path',{d:'M 0 0 Q '+(lean*0.6)+' '+(-h*0.55)+' '+lean+' '+(-h),
+                                fill:'none',stroke:green,
+                                'stroke-width':rr(1.4,2.8)*(0.6+depth),
+                                'stroke-linecap':'round',opacity:.28+0.42*depth}));
+    for(let l=0;l<2;l++){
+      const ly = -h*rr(.28,.70), lx = lean*0.4+(l?7:-7);
+      g.appendChild(svgEl('ellipse',{cx:lx,cy:ly,rx:rr(5,12)*(0.6+depth),ry:rr(2.4,4.6),
+                                     fill:GREENS[(colIdx+l)%GREENS.length],
+                                     opacity:.24+0.36*depth,
+                                     transform:'rotate('+(l?34:-34)+','+lx+','+ly+')'}));
+    }
+    if (bloom){
+      const col = BLOOMS[colIdx % BLOOMS.length];
+      const r = rr(6.5,14) * (0.55 + 0.6*depth);
+      const head = svgEl('g',{transform:'translate('+lean+','+(-h)+')'});
+      const petals = 5 + (colIdx % 2);
+      for(let pI=0;pI<petals;pI++)
+        head.appendChild(svgEl('ellipse',{cx:0,cy:-r*0.92,rx:r*0.56,ry:r*0.92,fill:col,
+                                          opacity:.55+0.35*depth,
+                                          transform:'rotate('+((pI/petals)*360)+')'}));
+      head.appendChild(svgEl('circle',{cx:0,cy:0,r:r*0.40,fill:'#f4d98c',opacity:.9}));
+      g.appendChild(head);
+    }
+    meadow.appendChild(anchor);
+  }
+
+  /* back layer: short, pale, evenly scattered */
+  for(let i=0;i<66;i++)
+    stem(rr(-30,1110), rr(46,150), rr(0.10,0.34), i, i % 5 !== 2);
+
+  /* front layer: taller, clustered into drifts the way wildflowers grow */
+  let cx0 = -40;
+  for(let c=0; cx0 < 1120; c++){
+    const n = 3 + Math.floor(rnd()*5);
+    for(let k=0;k<n;k++)
+      stem(cx0 + rr(-34,34), rr(130,330), rr(0.55,1.0), c*3+k, k % 4 !== 3);
+    cx0 += rr(70,150);
+  }
+
+  /* a few larger blooms right at the front, bottom corners first */
+  [[40,300],[150,250],[930,290],[1040,240],[560,200]].forEach(function(pos,i){
+    stem(pos[0], pos[1], 1.0, i*2+1, true);
+  });
+
+  /* ---- butterflies, drifting ---- */
+  for(let i=0;i<4;i++){
+    const col = ['#fdf6ec','#f2c6cc','#c6d9ec','#f7e3b4'][i];
+    const w = rr(22,34);
+    const b = svgEl('g',{});
+    b.style.cssText = 'animation:flutter '+rr(17,26)+'s linear '+(-rr(0,20))+'s infinite';
+    const inner = svgEl('g',{transform:'translate('+rr(60,1000)+','+rr(560,1500)+')'});
+    const wing = svgEl('g',{});
+    wing.style.cssText='transform-box:fill-box;transform-origin:50% 50%;'+
+      'animation:flap '+rr(.5,.9)+'s ease-in-out '+(-rr(0,1))+'s infinite alternate';
+    wing.appendChild(svgEl('ellipse',{cx:-w*0.42,cy:-w*0.14,rx:w*0.44,ry:w*0.30,fill:col,opacity:.85,transform:'rotate(-22,'+(-w*0.42)+','+(-w*0.14)+')'}));
+    wing.appendChild(svgEl('ellipse',{cx: w*0.42,cy:-w*0.14,rx:w*0.44,ry:w*0.30,fill:col,opacity:.85,transform:'rotate(22,'+(w*0.42)+','+(-w*0.14)+')'}));
+    wing.appendChild(svgEl('ellipse',{cx:-w*0.30,cy: w*0.20,rx:w*0.30,ry:w*0.22,fill:col,opacity:.7,transform:'rotate(-14,'+(-w*0.30)+','+(w*0.20)+')'}));
+    wing.appendChild(svgEl('ellipse',{cx: w*0.30,cy: w*0.20,rx:w*0.30,ry:w*0.22,fill:col,opacity:.7,transform:'rotate(14,'+(w*0.30)+','+(w*0.20)+')'}));
+    wing.appendChild(svgEl('ellipse',{cx:0,cy:0,rx:w*0.06,ry:w*0.28,fill:'#a68a6e',opacity:.8}));
+    inner.appendChild(wing); b.appendChild(inner); sky.appendChild(b);
+  }
+})();
+
 /* ---- gold frame with corner sprigs ---- */
-(function(){
+if (TH.frame !== false) (function(){
   const f = document.getElementById('frame');
   const outer = svgEl('rect',{x:56,y:56,width:968,height:1808,rx:10,fill:'none',
                               'stroke-width':2.2,opacity:.85});
@@ -734,7 +975,16 @@ for(let i=0;i<26;i++){
                                      transform:'rotate(-26)'}));
       g.appendChild(svgEl('ellipse',{cx:-L*0.62,cy:-2,rx:L,ry:W,fill:col,opacity:.72,
                                      transform:'rotate(26)'}));
-      if(n%7===3) g.appendChild(svgEl('circle',{cx:0,cy:13,r:4.6,fill:TH.berry,opacity:.9}));
+      if(TH.blooms && n%3===1){
+        /* a small bloom instead of a berry, to match the meadow */
+        const col = TH.blooms[n % TH.blooms.length];
+        for(let pI=0;pI<5;pI++)
+          g.appendChild(svgEl('ellipse',{cx:0,cy:-9.5,rx:5.6,ry:9.5,fill:col,opacity:.95,
+                                         transform:'rotate('+(pI*72)+')'}));
+        g.appendChild(svgEl('circle',{cx:0,cy:0,r:4,fill:'#f4d98c'}));
+      } else if(n%7===3){
+        g.appendChild(svgEl('circle',{cx:0,cy:13,r:4.6,fill:TH.berry,opacity:.9}));
+      }
       outer.appendChild(g); w.appendChild(outer); n++;
     }
   });
@@ -792,7 +1042,7 @@ scene('scP','P'); scene('scD','D'); scene('scE','E');
 /* delays are relative to the owning scene's start */
 const CUES = {
   heroStar:['A',0.15], a1:['A',0.55], a2:['A',1.15],
-  b0:['B',0.15], b1:['B',0.45], b2:['B',0.75], b3:['B',0.60], b4:['B',1.15],
+  b0:['B',0.15], b1:['B',0.45], b2:['B',0.75], b2f:['B',0.75], b3:['B',0.60], b4:['B',1.15],
   c0:['C',0.20], c1:['C',0.55], c2:['C',1.15], c3:['C',1.35], c4:['C',1.60],
   p0:['P',0.15], p1:['P',0.35], p2:['P',1.30],
   d0:['D',0.15], d1:['D',0.35], d2:['D',0.45], d3:['D',0.55], d4:['D',0.70],
@@ -802,6 +1052,12 @@ const CUES = {
 for(const id in CUES){
   const el = document.getElementById(id);
   if(el) el.style.animationDelay = (T[CUES[id][0]].s + CUES[id][1]) + 's';
+}
+
+/* the meadow theme says pink or blue with footprints rather than a glyph */
+if (TH.decor === 'meadow'){
+  document.getElementById('b2').hidden = true;
+  document.getElementById('b2f').hidden = false;
 }
 
 /* the portrait pushes in slowly across its whole scene */

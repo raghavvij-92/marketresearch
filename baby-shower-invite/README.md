@@ -66,16 +66,17 @@ rather than near one, so the picture and the music land together.
 
 ## Themes
 
-The film ships in six palettes. They are the same animation and the same
-soundtrack; only the colour changes.
+The film ships in seven looks. Six are pure palette swaps over the same
+animation. The seventh, `meadow`, also brings its own decorative layer.
 
-**Simran chose `blue-pink`, and it is the default** — `invite.html` and
+**Simran chose `meadow`, and it is the default** — `invite.html` and
 `render.js` both fall back to it, so a plain `node render.js` renders the
 chosen film. The rest are kept because they cost nothing to keep.
 
-| Key | Palette |
+| Key | Look |
 |---|---|
-| `blue-pink` | **Chosen.** Blue & Pink. Cool blue on one side, warm pink on the other, and a wreath that alternates blue-grey foliage with pink blossom. |
+| `meadow` | **Chosen.** Watercolour Meadow. Warm cream and apricot over a mint field, a clothesline of baby clothes overhead, a wildflower meadow underfoot, butterflies, and pink and blue footprints in place of the question mark. No gold frame: the botanicals do that job. |
+| `blue-pink` | Blue & Pink. Cool blue on one side, warm pink on the other, and a wreath that alternates blue-grey foliage with pink blossom. |
 | `ivory-sage` | Ivory & Sage. Cream paper, green wreath, gold rule. |
 | `blush-gold` | Blush & Gold. Warm rose and peach with champagne. |
 | `powder-mint` | Powder & Mint. Fresh aqua and green. |
@@ -87,6 +88,19 @@ CSS custom properties for the palette, plus the colour sets the decorative
 generators draw from (balloons, petals, confetti, stars, wreath). Nothing else
 in the file hard-codes a colour, so a new palette is a new entry and nothing
 more.
+
+Two optional keys go further. `decor: 'meadow'` switches on the clothesline,
+the wildflower meadow, the butterflies, the softer painted balloons and the
+footprints; `frame: false` drops the gold rule for a theme whose own
+botanicals frame the page. Everything they add is gated on those keys, so the
+other six render exactly as they did before.
+
+One trap worth knowing if you extend this: a CSS `transform` on an SVG element
+overrides that element's `transform` attribute rather than composing with it.
+Anything placed with an attribute and animated with CSS therefore needs two
+nested groups — placement outside, motion inside. The wreath, the frame
+corners, the hanging clothes and every stem in the meadow are all built that
+way.
 
 Preview one in a browser with `invite.html?theme=blue-pink`, or render it with
 `./build.sh blue-pink`. A full run also writes `out/theme-comparison.jpg`,
