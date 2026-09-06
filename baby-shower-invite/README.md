@@ -17,7 +17,7 @@ Six scenes, gender-neutral throughout since the baby's gender is a surprise:
 1. **Twinkle, twinkle** — a gold sparkle and the opening couplet.
 2. **Pink or blue?** — two balloons and a question mark.
 3. **The invitation** — a botanical wreath around *Baby Shower*, and the names.
-4. **The portrait** — Simran and Akshat, in an arch, pushing in slowly.
+4. **The portrait** — Simran and Akshat standing in the scene, pushing in slowly.
 5. **When & where** — the date lockup and the venue.
 6. **Come celebrate with us** — a confetti burst and the closing card.
 
@@ -25,14 +25,21 @@ The length is deliberate. At 29.6 s the film posts as a single WhatsApp status
 rather than being cut in two at the thirty-second mark, so the scenes are timed
 against that ceiling rather than allowed to sprawl.
 
-The portrait (`couple.jpg`) is masked into an arch, which is the shape
-stationery uses and which means the top of the frame falls on empty backdrop
-instead of cropping anyone. It is tinted toward whichever palette is running so
-the photograph's own warm backdrop does not fight the page, and on the dark
-theme it is brought down in brightness as well, since a bright photograph on
-navy reads as a hole rather than a picture. Both are theme tokens
-(`--photo-tint`, `--photo-filter`), so a new palette tunes the photograph the
-same way it tunes everything else.
+The portrait (`couple.png`) is a cutout with a real alpha channel, so Simran
+and Akshat stand in the scene rather than sitting in a frame: feet on the
+ground, a soft contact shadow so they are planted rather than floating, and —
+on the meadow theme — a third layer of flowers drawn *above* the scenes so they
+stand among the blooms instead of behind all of them.
+
+It is tinted toward whichever look is running, with the tint masked to the
+silhouette by the cutout itself so it cannot show up as a rectangle, and on the
+dark theme it is brought down in brightness as well, since a bright photograph
+on navy reads as a hole rather than a picture. Both are theme tokens
+(`--photo-tint`, `--photo-filter`).
+
+Three nested wrappers carry the figure: placement, entrance, and the slow
+push-in. They cannot share one element, because each needs its own `transform`.
+The push-in grows from `50% 100%`, so their feet stay planted as it scales.
 
 ### Voice
 
@@ -112,7 +119,7 @@ which puts all six side by side for choosing between them.
 |---|---|
 | `invite.html` | The invitation itself. Open it in a browser and it plays. |
 | `fonts.css` | Parisienne, Cormorant Garamond and Quicksand, embedded as base64 so nothing loads from the network. |
-| `couple.jpg` | The portrait used in scene four. |
+| `couple.png` | The portrait cutout used in scene four. Alpha channel required. |
 | `render.js` | Frame-accurate renderer: pauses the document timeline, seeks each frame, pipes JPEG frames into ffmpeg. |
 | `music.py` | Synthesises the soundtrack to `out/music.wav`. |
 | `build.sh` | Runs the whole pipeline end to end. |

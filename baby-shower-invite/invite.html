@@ -248,33 +248,42 @@ body.seek *,body.seek *::before,body.seek *::after{
   animation-iteration-count:infinite;animation-direction:alternate}
 @keyframes bob{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
 
-/* the portrait, in an arch — the shape stationery uses, and it lets the
-   top of the frame fall on empty backdrop rather than cropping anyone */
-.photo-frame{position:relative;flex:none;margin:46px 0 42px}
-.photo-arch{
-  width:672px;height:896px;position:relative;overflow:hidden;isolation:isolate;
-  border-radius:336px 336px 20px 20px;
-  box-shadow:0 26px 64px rgba(var(--vig),.30);
+/* The portrait is a cutout, so Simran and Akshat stand in the scene rather
+   than sitting in a frame: feet on the ground, meadow flowers in front of
+   them, a soft contact shadow so they are planted rather than floating.
+   Three nested wrappers, because placement, entrance and the slow push-in
+   each need their own transform. */
+.couple-stand{
+  position:absolute;left:50%;bottom:170px;width:654px;
+  transform:translateX(-50%);
 }
-.photo-arch img{
-  width:100%;height:100%;object-fit:cover;display:block;
-  filter:var(--photo-filter);
-  animation-name:kenburns;animation-timing-function:linear;animation-fill-mode:both;
+.couple-in{
+  animation-name:standIn;animation-duration:1.5s;
+  animation-timing-function:cubic-bezier(.19,1,.22,1);animation-fill-mode:both;
 }
-@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.055)}}
-.photo-tint{position:absolute;inset:0;pointer-events:none;
-  background:var(--photo-tint);mix-blend-mode:var(--photo-blend)}
-.photo-arch::after{ /* seats the picture into the page instead of on top of it */
-  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
-  box-shadow:inset 0 0 72px rgba(var(--vig),.30);
+@keyframes standIn{from{opacity:0;transform:translateY(38px)}to{opacity:1;transform:none}}
+.couple-zoom{
+  transform-origin:50% 100%;          /* grows from the feet, so they stay put */
+  animation-name:standZoom;animation-timing-function:linear;animation-fill-mode:both;
+  position:relative;
 }
-/* a double gold rule around the arch, echoing the page frame */
-.photo-frame::before,.photo-frame::after{
-  content:"";position:absolute;pointer-events:none;border:2.4px solid var(--gold);
-  inset:-18px;border-radius:354px 354px 38px 38px;opacity:.95;
+@keyframes standZoom{from{transform:scale(1)}to{transform:scale(1.038)}}
+.couple-zoom img{width:100%;display:block;filter:var(--photo-filter)}
+.couple-zoom::after{            /* the theme tint, masked to the silhouette */
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:var(--photo-tint);
+  -webkit-mask-image:url(couple.png);mask-image:url(couple.png);
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  mix-blend-mode:var(--photo-blend);
 }
-.photo-frame::after{inset:-31px;border-width:1.2px;opacity:.55;
-  border-radius:367px 367px 51px 51px}
+.couple-shadow{
+  position:absolute;left:50%;bottom:-14px;width:560px;height:64px;
+  transform:translateX(-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(var(--vig),.42) 0%,rgba(var(--vig),0) 72%);
+  filter:blur(10px);
+  animation:fade 1.5s ease-out both;
+}
+.stand-label{position:absolute;left:0;right:0;top:470px;text-align:center}
 
 /* confetti (final scene) */
 .confetti{position:absolute;left:50%;top:52%;opacity:0;
@@ -415,17 +424,14 @@ body.seek *,body.seek *::before,body.seek *::after{
 
   <!-- ============ SCENE P — the parents to be ============ -->
   <div class="scene" id="scP">
-    <div class="label fade" id="p0">Counting down the days</div>
-    <div class="photo-frame pop" id="p1">
-      <div class="photo-arch">
-        <img src="couple.jpg" alt="Simran and Akshat">
-        <div class="photo-tint"></div>
+    <div class="label fade stand-label" id="p0">Counting down the days</div>
+    <div class="couple-stand">
+      <div class="couple-shadow" id="p2"></div>
+      <div class="couple-in" id="p1">
+        <div class="couple-zoom">
+          <img src="couple.png" alt="Simran and Akshat">
+        </div>
       </div>
-    </div>
-    <div class="rule fade" id="p2">
-      <i></i>
-      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" style="fill:var(--gold)"/></svg>
-      <i class="r"></i>
     </div>
   </div>
 
@@ -846,7 +852,7 @@ if (TH.decor === 'meadow') (function(){
   band.style.filter = 'blur(46px)';
   meadow.appendChild(band);
 
-  function stem(x, h, depth, colIdx, bloom){
+  function stem(x, h, depth, colIdx, bloom, parent){
     const anchor = svgEl('g',{transform:'translate('+x+',1934)'});
     const g = svgEl('g',{});
     g.style.cssText = 'transform-box:fill-box;transform-origin:50% 100%;'+
@@ -877,7 +883,7 @@ if (TH.decor === 'meadow') (function(){
       head.appendChild(svgEl('circle',{cx:0,cy:0,r:r*0.40,fill:'#f4d98c',opacity:.9}));
       g.appendChild(head);
     }
-    meadow.appendChild(anchor);
+    (parent || meadow).appendChild(anchor);
   }
 
   /* back layer: short, pale, evenly scattered */
@@ -897,6 +903,23 @@ if (TH.decor === 'meadow') (function(){
   [[40,300],[150,250],[930,290],[1040,240],[560,200]].forEach(function(pos,i){
     stem(pos[0], pos[1], 1.0, i*2+1, true);
   });
+
+  /* A third layer, drawn above the scenes rather than behind them, so the
+     couple stand among the flowers instead of behind all of them. It only
+     reaches the bottom sixth of the frame, well clear of any lettering. */
+  const fg = svgEl('svg',{width:1080,height:1920,viewBox:'0 0 1080 1920'});
+  fg.style.cssText = 'position:absolute;left:0;top:0;pointer-events:none';
+  document.getElementById('stage').insertBefore(fg, document.getElementById('vignette'));
+  const fgBand = svgEl('ellipse',{cx:540,cy:1990,rx:700,ry:130,fill:GREENS[1],opacity:.26});
+  fgBand.style.filter = 'blur(38px)';
+  fg.appendChild(fgBand);
+  let fx = -30;
+  for(let c=0; fx < 1120; c++){
+    const n = 2 + Math.floor(rnd()*3);
+    for(let k=0;k<n;k++)
+      stem(fx + rr(-30,30), rr(170,300), rr(0.85,1.0), c*3+k+7, k % 3 !== 2, fg);
+    fx += rr(78,150);
+  }
 
   /* ---- butterflies, drifting ---- */
   for(let i=0;i<4;i++){
@@ -1044,7 +1067,7 @@ const CUES = {
   heroStar:['A',0.15], a1:['A',0.55], a2:['A',1.15],
   b0:['B',0.15], b1:['B',0.45], b2:['B',0.75], b2f:['B',0.75], b3:['B',0.60], b4:['B',1.15],
   c0:['C',0.20], c1:['C',0.55], c2:['C',1.15], c3:['C',1.35], c4:['C',1.60],
-  p0:['P',0.15], p1:['P',0.35], p2:['P',1.30],
+  p0:['P',0.15], p1:['P',0.30], p2:['P',0.55],
   d0:['D',0.15], d1:['D',0.35], d2:['D',0.45], d3:['D',0.55], d4:['D',0.70],
   d5:['D',0.95], d6:['D',1.25], d7:['D',1.45], d8:['D',1.65], d9:['D',1.90],
   e1:['E',0.15], e2:['E',0.60], e3:['E',0.80], e4:['E',1.20], e5:['E',1.40]
@@ -1062,9 +1085,9 @@ if (TH.decor === 'meadow'){
 
 /* the portrait pushes in slowly across its whole scene */
 (function(){
-  const img = document.querySelector('.photo-arch img');
-  img.style.animationDelay = T.P.s + 's';
-  img.style.animationDuration = T.P.d + 's';
+  const z = document.querySelector('.couple-zoom');
+  z.style.animationDelay = T.P.s + 's';
+  z.style.animationDuration = T.P.d + 's';
 })();
 
 /* the hero star keeps a slow shimmer after it lands */
