@@ -20,9 +20,21 @@ Five scenes, gender-neutral throughout since the baby's gender is a surprise:
 4. **When & where** — the date lockup and the venue.
 5. **Come shower them with love** — a confetti burst and the closing card.
 
-The soundtrack is a music-box setting of *Ah! vous dirai-je, maman* — the
-Twinkle Twinkle Little Star melody, which is public domain — over a soft sine
-pad, synthesised from scratch in `music.py`. No licensed audio is used.
+The soundtrack is a bright, celebratory setting of *Ah! vous dirai-je, maman* —
+the Twinkle Twinkle Little Star melody, which is public domain — in C major at
+126 BPM over a I-V-vi-IV flavoured harmony. Every instrument is synthesised
+from scratch in `music.py`, so no licensed audio is used:
+
+| Voice | How it is made |
+|---|---|
+| Glockenspiel | Struck metal bar: stretched, inharmonic partials. Carries the tune. |
+| Marimba | Wooden bar, running eighth-note ostinato under the melody. |
+| Plucked chords | Karplus-Strong nylon string. |
+| Bass | Round sine with a little second harmonic, so it survives a phone speaker. |
+| Shaker and claps | Shaped noise transients. |
+
+The arrangement adds a voice per phrase, so the film lifts about 3 dB from the
+first phrase to the last instead of sitting still.
 
 ## Files
 

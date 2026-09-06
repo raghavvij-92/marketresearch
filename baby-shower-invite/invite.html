@@ -12,8 +12,8 @@
    =========================================================== */
 
 :root{
-  --cream:#fbf4ea;
-  --cream-2:#f3e7d6;
+  --cream:#fffcf6;
+  --cream-2:#fbf2e4;
   --ink:#4a4038;
   --ink-soft:#6d6157;
   --sage:#7f9a7a;
@@ -35,16 +35,16 @@ body.seek *,body.seek *::before,body.seek *::after{
   position:relative;width:1080px;height:1920px;overflow:hidden;
   font-kerning:normal;text-rendering:geometricPrecision;
   background:
-    radial-gradient(120% 80% at 50% 8%,  #fffaf3 0%, rgba(255,250,243,0) 62%),
-    radial-gradient(90% 55% at 12% 88%,  rgba(168,196,216,.30) 0%, rgba(168,196,216,0) 70%),
-    radial-gradient(95% 55% at 90% 78%,  rgba(230,189,182,.30) 0%, rgba(230,189,182,0) 70%),
-    radial-gradient(80% 45% at 82% 14%,  rgba(206,224,195,.32) 0%, rgba(206,224,195,0) 72%),
-    linear-gradient(168deg, var(--cream) 0%, #f7ecdd 46%, var(--cream-2) 100%);
+    radial-gradient(120% 80% at 50% 8%,  #ffffff 0%, rgba(255,255,255,0) 62%),
+    radial-gradient(90% 55% at 12% 88%,  rgba(150,190,220,.36) 0%, rgba(150,190,220,0) 70%),
+    radial-gradient(95% 55% at 90% 78%,  rgba(240,180,172,.34) 0%, rgba(240,180,172,0) 70%),
+    radial-gradient(80% 45% at 82% 14%,  rgba(198,228,180,.38) 0%, rgba(198,228,180,0) 72%),
+    linear-gradient(168deg, var(--cream) 0%, #fef8ee 46%, var(--cream-2) 100%);
 }
 
 /* paper grain ------------------------------------------------ */
 #grain{
-  position:absolute;inset:0;pointer-events:none;opacity:.30;mix-blend-mode:multiply;
+  position:absolute;inset:0;pointer-events:none;opacity:.18;mix-blend-mode:multiply;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.42'/></svg>");
 }
 #curtain{
@@ -56,7 +56,7 @@ body.seek *,body.seek *::before,body.seek *::after{
 }
 #vignette{
   position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(78% 62% at 50% 46%, rgba(0,0,0,0) 55%, rgba(104,84,60,.16) 100%);
+  background:radial-gradient(80% 64% at 50% 46%, rgba(0,0,0,0) 60%, rgba(120,100,74,.085) 100%);
 }
 
 /* ---------- decorative background layers -------------------- */
@@ -122,7 +122,7 @@ body.seek *,body.seek *::before,body.seek *::after{
 .scene::before{
   content:"";position:absolute;left:50%;top:50%;width:1160px;height:1080px;
   transform:translate(-50%,-50%);pointer-events:none;
-  background:radial-gradient(closest-side,rgba(253,247,238,.90) 0%,rgba(253,247,238,.72) 42%,rgba(253,247,238,0) 78%);
+  background:radial-gradient(closest-side,rgba(255,252,246,.94) 0%,rgba(255,252,246,.78) 46%,rgba(255,252,246,0) 80%);
 }
 .scene{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -383,22 +383,22 @@ for(let i=0;i<44;i++){
   s.className='star';
   s.style.cssText='left:'+x+'px;top:'+y+'px;width:'+size+'px;height:'+size+'px;'+
     'animation-duration:'+rr(2.2,4.6)+'s;animation-delay:'+(-rr(0,4))+'s';
-  const col = pick(['#d8bd7c','#e6cf9c','#cbd8c4','#d9c6bf','#c3d3de']);
+  const col = pick(['#e8c777','#f2dfa2','#c6dcb8','#efc9bf','#b6d2e6']);
   s.innerHTML = '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'">'+
     '<path d="M12 0 C12.9 8.4 15.6 11.1 24 12 C15.6 12.9 12.9 15.6 12 24 C11.1 15.6 8.4 12.9 0 12 C8.4 11.1 11.1 8.4 12 0 Z" fill="'+col+'"/></svg>';
   bg.appendChild(s);
 }
 
 /* ---- rising balloons ---- */
-const BAL = ['#f0c9c6','#bcd3e2','#cfe0c2','#f3e0ad','#e0cfe6','#f6d8c2'];
+const BAL = ['#f7b9b3','#a4cbe6','#bcdda6','#f9dc8c','#dcbde9','#fbcaa2'];
 for(let i=0;i<9;i++){
   /* balloons hug the margins so they never fight the lettering */
-  const w = rr(66,128), dur = rr(26,42);
-  const left = (i >= 7) ? rr(400,620) : (i % 2 ? rr(15,215) : rr(825,1000));
+  const w = (i >= 7 ? rr(52,74) : rr(70,130)), dur = rr(26,42);
+  const left = (i >= 7) ? rr(390,630) : (i % 2 ? rr(10,190) : rr(850,1015));
   const rise = document.createElement('div');
   rise.className='balloon-rise';
   rise.style.cssText='left:'+left+'px;animation-duration:'+dur+'s;animation-delay:'+(-rr(0,dur))+
-                     's;opacity:'+(i>=7 ? rr(.22,.34) : rr(.5,.82));
+                     's;opacity:'+(i>=7 ? rr(.15,.23) : rr(.66,.94));
   const swayEl = document.createElement('div');
   swayEl.className='balloon-sway';
   swayEl.style.cssText='animation-duration:'+rr(3.4,6.2)+'s;animation-delay:'+(-rr(0,4))+'s;position:relative';
@@ -418,8 +418,8 @@ for(let i=0;i<26;i++){
   const p = document.createElement('div');
   p.className='petal';
   p.style.cssText='left:'+rr(0,1060)+'px;width:'+w+'px;height:'+(w*rr(.6,1.05))+'px;'+
-    'background:'+pick(['#eec9c4','#cfe0c2','#f2ddaa','#c6d9e6','#e3d2ea'])+';'+
-    '--dx:'+rr(-160,160)+'px;animation-duration:'+dur+'s;animation-delay:'+(-rr(0,dur))+'s;opacity:.8';
+    'background:'+pick(['#f4bdb6','#bfdca8','#f7d894','#aecfe6','#dcc4ea'])+';'+
+    '--dx:'+rr(-160,160)+'px;animation-duration:'+dur+'s;animation-delay:'+(-rr(0,dur))+'s;opacity:.92';
   bg.appendChild(p);
 }
 
@@ -494,7 +494,7 @@ for(let i=0;i<26;i++){
 /* ---- confetti burst for scene E ---- */
 (function(){
   const host = document.getElementById('confettiHost');
-  const cols=['#e8b7b0','#a9c4d8','#cbdfc0','#f0d99a','#d8c3e4','#f2c9a8','#c2a05c'];
+  const cols=['#f2a49b','#8fbedd','#b6dc96','#f6cf6d','#d3aee4','#f7bc8d','#d4ab52'];
   for(let i=0;i<64;i++){
     const a = (i/64)*Math.PI*2 + rr(-.16,.16);
     const dist = rr(320,760);
