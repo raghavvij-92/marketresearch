@@ -67,12 +67,15 @@ rather than near one, so the picture and the music land together.
 ## Themes
 
 The film ships in six palettes. They are the same animation and the same
-soundtrack; only the colour changes, so picking one is purely a matter of
-taste.
+soundtrack; only the colour changes.
+
+**Simran chose `blue-pink`, and it is the default** — `invite.html` and
+`render.js` both fall back to it, so a plain `node render.js` renders the
+chosen film. The rest are kept because they cost nothing to keep.
 
 | Key | Palette |
 |---|---|
-| `blue-pink` | Blue & Pink. Cool blue on one side, warm pink on the other, and a wreath that alternates blue-grey foliage with pink blossom. |
+| `blue-pink` | **Chosen.** Blue & Pink. Cool blue on one side, warm pink on the other, and a wreath that alternates blue-grey foliage with pink blossom. |
 | `ivory-sage` | Ivory & Sage. Cream paper, green wreath, gold rule. |
 | `blush-gold` | Blush & Gold. Warm rose and peach with champagne. |
 | `powder-mint` | Powder & Mint. Fresh aqua and green. |

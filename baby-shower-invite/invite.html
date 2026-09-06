@@ -597,9 +597,11 @@ const THEMES = {
   }
 };
 
+/* Blue & Pink is the palette Simran chose, so it is what you get without a
+   query string. The others stay available. */
 const THEME_KEY = (function(){
   const q = new URLSearchParams(location.search).get('theme');
-  return (q && THEMES[q]) ? q : 'ivory-sage';
+  return (q && THEMES[q]) ? q : 'blue-pink';
 })();
 const TH = THEMES[THEME_KEY];
 for (const k in TH.css) document.documentElement.style.setProperty(k, TH.css[k]);

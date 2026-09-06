@@ -12,7 +12,7 @@ cd "$(dirname "$0")"
 export NODE_PATH="${NODE_PATH:-/opt/node22/lib/node_modules}"
 FFMPEG="${FFMPEG_BIN:-$(command -v ffmpeg || echo /usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2)}"
 
-ALL_THEMES=(ivory-sage blue-pink blush-gold powder-mint lilac-butter midnight-gold)
+ALL_THEMES=(blue-pink ivory-sage blush-gold powder-mint lilac-butter midnight-gold)
 if [ "$#" -gt 0 ]; then THEMES=("$@"); else THEMES=("${ALL_THEMES[@]}"); fi
 
 mkdir -p out

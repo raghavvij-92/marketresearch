@@ -37,7 +37,7 @@ function argValue(flag, fallback) {
   const i = process.argv.indexOf(flag);
   return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
 }
-const THEME = argValue('--theme', 'ivory-sage');
+const THEME = argValue('--theme', 'blue-pink');   // the chosen palette
 
 async function openInvite(browser) {
   const page = await browser.newPage({
