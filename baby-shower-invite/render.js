@@ -83,7 +83,7 @@ async function seek(page, t) {
   }
 
   if (process.argv.includes('--preview')) {
-    const marks = [1.6, 3.2, 7.4, 12.6, 14.4, 18.2, 20.6, 23.4, 25.6];
+    const marks = [1.6, 3.2, 7.2, 11.8, 13.8, 17.0, 19.0, 22.0, 24.0, 26.5, 28.6];
     for (const t of marks) {
       await seek(page, t);
       await page.screenshot({ path: path.join(OUT, `preview-${THEME}-${t.toFixed(1)}.png`) });

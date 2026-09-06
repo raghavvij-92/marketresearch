@@ -38,6 +38,10 @@
   --cloud:#ffffff;        --cloud-op:.55;
   --glow:255,236,190;
 
+  --photo-tint:rgba(198,170,112,.12);
+  --photo-blend:soft-light;
+  --photo-filter:none;
+
   --accent-pink:#c98f8f;  --accent-blue:#7fa0b8;
   --bal-pink:#f0c3c3;     --bal-blue:#b5cee0;
   --string:rgba(120,104,86,.42);
@@ -222,6 +226,34 @@ body.seek *,body.seek *::before,body.seek *::after{
   animation-iteration-count:infinite;animation-direction:alternate}
 @keyframes bob{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
 
+/* the portrait, in an arch — the shape stationery uses, and it lets the
+   top of the frame fall on empty backdrop rather than cropping anyone */
+.photo-frame{position:relative;flex:none;margin:46px 0 42px}
+.photo-arch{
+  width:672px;height:896px;position:relative;overflow:hidden;isolation:isolate;
+  border-radius:336px 336px 20px 20px;
+  box-shadow:0 26px 64px rgba(var(--vig),.30);
+}
+.photo-arch img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  filter:var(--photo-filter);
+  animation-name:kenburns;animation-timing-function:linear;animation-fill-mode:both;
+}
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.055)}}
+.photo-tint{position:absolute;inset:0;pointer-events:none;
+  background:var(--photo-tint);mix-blend-mode:var(--photo-blend)}
+.photo-arch::after{ /* seats the picture into the page instead of on top of it */
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  box-shadow:inset 0 0 72px rgba(var(--vig),.30);
+}
+/* a double gold rule around the arch, echoing the page frame */
+.photo-frame::before,.photo-frame::after{
+  content:"";position:absolute;pointer-events:none;border:2.4px solid var(--gold);
+  inset:-18px;border-radius:354px 354px 38px 38px;opacity:.95;
+}
+.photo-frame::after{inset:-31px;border-width:1.2px;opacity:.55;
+  border-radius:367px 367px 51px 51px}
+
 /* confetti (final scene) */
 .confetti{position:absolute;left:50%;top:52%;opacity:0;
   animation-name:burst;animation-timing-function:cubic-bezier(.12,.7,.3,1);animation-fill-mode:both}
@@ -339,6 +371,22 @@ body.seek *,body.seek *::before,body.seek *::after{
     <div class="names wipe" id="c4">Simran &amp; Akshat</div>
   </div>
 
+  <!-- ============ SCENE P — the parents to be ============ -->
+  <div class="scene" id="scP">
+    <div class="label fade" id="p0">Counting down the days</div>
+    <div class="photo-frame pop" id="p1">
+      <div class="photo-arch">
+        <img src="couple.jpg" alt="Simran and Akshat">
+        <div class="photo-tint"></div>
+      </div>
+    </div>
+    <div class="rule fade" id="p2">
+      <i></i>
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" style="fill:var(--gold)"/></svg>
+      <i class="r"></i>
+    </div>
+  </div>
+
   <!-- ============ SCENE D — when &amp; where ============ -->
   <div class="scene" id="scD">
     <div class="datebox">
@@ -384,14 +432,18 @@ body.seek *,body.seek *::before,body.seek *::after{
    Deterministic scene generation. Everything below runs once, before
    the renderer pauses the document timeline and seeks frame by frame.
    ------------------------------------------------------------------ */
+/* Scene starts and durations. The whole film stays under 30 s so it posts
+   as a single WhatsApp status rather than being split in two. Scenes overlap
+   by half a second, which is the crossfade. */
 const T = {
-  A:{s:0.90, d:5.00},
-  B:{s:5.40, d:5.30},
-  C:{s:10.20,d:5.90},
-  D:{s:15.60,d:6.90},
-  E:{s:22.00,d:4.70}
+  A:{s:0.90, d:4.60},   /* twinkle, twinkle          */
+  B:{s:5.00, d:4.90},   /* pink or blue              */
+  C:{s:9.40, d:5.60},   /* the invitation            */
+  P:{s:14.50,d:5.20},   /* the portrait              */
+  D:{s:19.20,d:6.40},   /* when and where            */
+  E:{s:24.91,d:4.69}    /* come celebrate with us    */
 };
-window.TOTAL = 26.6;
+window.TOTAL = 29.6;
 document.documentElement.style.setProperty('--total', window.TOTAL + 's');
 
 /* -------------------------------------------------------------------
@@ -425,6 +477,7 @@ const THEMES = {
       '--curtain':'#fdf5f8','--glow':'252,226,236',
       '--accent-pink':'#d0808f','--accent-blue':'#7593c0',
       '--bal-pink':'#f6b8c6','--bal-blue':'#a9c8ea',
+      '--photo-tint':'rgba(228,152,180,.13)',
       '--string':'rgba(122,112,124,.42)'
     },
     balloons: ['#f6b3c1','#a5c6ea','#f8ccd6','#8fb6e0','#f2dbe4','#bfdaf4'],
@@ -450,6 +503,7 @@ const THEMES = {
       '--curtain':'#fdf6ef','--glow':'255,232,200',
       '--accent-pink':'#c9808c','--accent-blue':'#93a3b7',
       '--bal-pink':'#f2bfc0','--bal-blue':'#c6d2de',
+      '--photo-tint':'rgba(226,150,118,.14)',
       '--string':'rgba(128,108,92,.42)'
     },
     balloons: ['#f3c1b8','#f7d6b4','#eec9a0','#f8e4ca','#e8b9b0','#fae4d6'],
@@ -474,6 +528,7 @@ const THEMES = {
       '--curtain':'#f2faf7','--glow':'228,246,234',
       '--accent-pink':'#c98f9c','--accent-blue':'#6f9ec2',
       '--bal-pink':'#f0c3cb','--bal-blue':'#a8cbe6',
+      '--photo-tint':'rgba(136,200,190,.14)',
       '--string':'rgba(96,112,108,.42)'
     },
     balloons: ['#a9d3e4','#b8e0cc','#f4e6a8','#c9e8dc','#8fc4dd','#e4f0e6'],
@@ -498,6 +553,7 @@ const THEMES = {
       '--curtain':'#f8f4fb','--glow':'250,238,205',
       '--accent-pink':'#c98aa6','--accent-blue':'#8590c4',
       '--bal-pink':'#eec2d6','--bal-blue':'#b3b9e4',
+      '--photo-tint':'rgba(186,162,226,.14)',
       '--string':'rgba(112,104,124,.42)'
     },
     balloons: ['#cfc0e8','#f6e3a6','#e9c6de','#bcc4ea','#f3ddb8','#dcd0ef'],
@@ -524,6 +580,10 @@ const THEMES = {
       '--cloud':'#6f86b8','--cloud-op':'.16','--glow':'255,222,158',
       '--accent-pink':'#e6a3b4','--accent-blue':'#93b8e2',
       '--bal-pink':'#e4a0b0','--bal-blue':'#8fb2dd',
+      /* a bright photograph on navy reads as a hole in the page, so it is
+         brought down and cooled until it sits in the same room */
+      '--photo-tint':'rgba(38,60,104,.34)','--photo-blend':'multiply',
+      '--photo-filter':'brightness(.84) contrast(1.04) saturate(.94)',
       '--string':'rgba(206,196,174,.30)',
       '--script-sh':'0 2px 0 rgba(255,255,255,.06), 0 18px 44px rgba(0,0,0,.5)'
     },
@@ -724,21 +784,30 @@ function scene(id,k){
   el.style.animationDelay = T[k].s+'s';
   el.style.animationDuration = T[k].d+'s';
 }
-scene('scA','A'); scene('scB','B'); scene('scC','C'); scene('scD','D'); scene('scE','E');
+scene('scA','A'); scene('scB','B'); scene('scC','C');
+scene('scP','P'); scene('scD','D'); scene('scE','E');
 
 /* delays are relative to the owning scene's start */
 const CUES = {
   heroStar:['A',0.15], a1:['A',0.55], a2:['A',1.15],
   b0:['B',0.15], b1:['B',0.45], b2:['B',0.75], b3:['B',0.60], b4:['B',1.15],
   c0:['C',0.20], c1:['C',0.55], c2:['C',1.15], c3:['C',1.35], c4:['C',1.60],
+  p0:['P',0.15], p1:['P',0.35], p2:['P',1.30],
   d0:['D',0.15], d1:['D',0.35], d2:['D',0.45], d3:['D',0.55], d4:['D',0.70],
   d5:['D',0.95], d6:['D',1.25], d7:['D',1.45], d8:['D',1.65], d9:['D',1.90],
-  e1:['E',0.20], e2:['E',0.70], e3:['E',0.90], e4:['E',1.35], e5:['E',1.55]
+  e1:['E',0.15], e2:['E',0.60], e3:['E',0.80], e4:['E',1.20], e5:['E',1.40]
 };
 for(const id in CUES){
   const el = document.getElementById(id);
   if(el) el.style.animationDelay = (T[CUES[id][0]].s + CUES[id][1]) + 's';
 }
+
+/* the portrait pushes in slowly across its whole scene */
+(function(){
+  const img = document.querySelector('.photo-arch img');
+  img.style.animationDelay = T.P.s + 's';
+  img.style.animationDuration = T.P.d + 's';
+})();
 
 /* the hero star keeps a slow shimmer after it lands */
 document.getElementById('heroStar').style.animationDelay = (T.A.s+0.15)+'s';

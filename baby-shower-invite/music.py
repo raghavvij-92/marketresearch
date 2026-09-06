@@ -24,11 +24,11 @@ import wave
 import numpy as np
 
 SR = 44100
-DUR = 26.6
+DUR = 29.6
 BPM = 126.0
 BEAT = 60.0 / BPM          # 0.476 s
 PHRASE = 8 * BEAT          # 3.81 s
-START = 1.30               # the tune enters after a short curtain-raiser
+START = 1.25               # the tune enters after a short curtain-raiser
 
 rng = np.random.default_rng(913)
 N = int(DUR * SR)
@@ -200,7 +200,9 @@ def clap(vel=1.0):
 T1 = ['C5', 'C5', 'G5', 'G5', 'A5', 'A5', 'G5*']
 T2 = ['F5', 'F5', 'E5', 'E5', 'D5', 'D5', 'C5*']
 T3 = ['G5', 'G5', 'F5', 'F5', 'E5', 'E5', 'D5*']
-MELODY = [T1, T2, T3, T3, T1, T2]
+# T1 T2 T3 T3 T1 T2 is the whole tune; the closing T2 is the last line said
+# once more, which is how the film gets an ending rather than a stop
+MELODY = [T1, T2, T3, T3, T1, T2, T2]
 
 # two beats per chord, four chords per phrase
 CHORDS = [
@@ -209,6 +211,7 @@ CHORDS = [
     ['C', 'F', 'C', 'G'],
     ['Am', 'F', 'C', 'G'],
     ['C', 'G', 'Am', 'F'],
+    ['F', 'C', 'G', 'C'],
     ['F', 'C', 'G', 'C'],
 ]
 TRIAD = {'C': ['C', 'E', 'G'], 'G': ['G', 'B', 'D'],
@@ -311,7 +314,7 @@ for pi, phrase in enumerate(MELODY):
         for ci, ch in enumerate(chords):
             base = p0 + ci * 2 * BEAT
             for vi, nm in enumerate(chord_notes(ch, 3)):
-                add(pad(hz(nm), 2 * BEAT, (1.0 - 0.10 * vi) * (0.7 + 0.1 * pi)),
+                add(pad(hz(nm), 2 * BEAT, (1.0 - 0.10 * vi) * (0.7 + 0.08 * pi)),
                     base, pan=-0.40 + 0.40 * vi)
 
     # ---- a triangle marks the bar, from phrase three onward ------------
@@ -333,13 +336,14 @@ for k in range(4):
     add(shaker(0.35), START - (4 - k) * 0.5 * BEAT, pan=0.3 if k % 2 else -0.3)
 
 # ---- a sparkle where the confetti bursts (scene E, t = 22.0) -------------
+CONFETTI_AT = 25.06          # scene E's burst, which falls on a chord change
 for k, nm in enumerate(['C6', 'E6', 'G6', 'C7', 'E7']):
-    add(glock(hz(nm), 0.70 - 0.07 * k), 22.00 + k * 0.085, pan=-0.34 + 0.17 * k)
-add(triangle(1.35), 22.00, pan=0.0)
-add(clap(0.6), 22.00, pan=0.0)
+    add(glock(hz(nm), 0.70 - 0.07 * k), CONFETTI_AT + k * 0.085, pan=-0.34 + 0.17 * k)
+add(triangle(1.35), CONFETTI_AT, pan=0.0)
+add(clap(0.6), CONFETTI_AT, pan=0.0)
 
 # ---- the last chord, left ringing ---------------------------------------
-END = START + 6 * PHRASE                     # 24.16 s
+END = START + len(MELODY) * PHRASE
 for vi, nm in enumerate(['C3', 'E3', 'G3', 'C4', 'E4', 'G4', 'C5']):
     add(pluck(hz(nm), 2.2, 0.95 - 0.07 * vi), END + vi * 0.014, pan=-0.35 + 0.12 * vi)
 add(bass(hz('C2'), 2.0, 0.9), END, pan=0.0)
@@ -385,7 +389,7 @@ left, right = lift(left), lift(right)
 # ---------------------------------------------------------------------------
 # fades and level
 # ---------------------------------------------------------------------------
-fi, fo = int(0.30 * SR), int(1.30 * SR)
+fi, fo = int(0.30 * SR), int(1.10 * SR)
 env = np.ones(N)
 env[:fi] = np.linspace(0, 1, fi) ** 1.3
 env[-fo:] = np.linspace(1, 0, fo) ** 1.5

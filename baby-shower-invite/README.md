@@ -7,18 +7,32 @@ for WhatsApp status, Instagram stories, and plain old sharing in a group chat.
 
 | | |
 |---|---|
-| Duration | 26.6 s |
+| Duration | 29.6 s |
 | Resolution | 1080 x 1920, 30 fps |
 | Video | H.264 (high profile), `+faststart` |
 | Audio | AAC 192 kbps stereo |
 
-Five scenes, gender-neutral throughout since the baby's gender is a surprise:
+Six scenes, gender-neutral throughout since the baby's gender is a surprise:
 
 1. **Twinkle, twinkle** — a gold sparkle and the opening couplet.
 2. **Pink or blue?** — two balloons and a question mark.
 3. **The invitation** — a botanical wreath around *Baby Shower*, and the names.
-4. **When & where** — the date lockup and the venue.
-5. **Come celebrate with us** — a confetti burst and the closing card.
+4. **The portrait** — Simran and Akshat, in an arch, pushing in slowly.
+5. **When & where** — the date lockup and the venue.
+6. **Come celebrate with us** — a confetti burst and the closing card.
+
+The length is deliberate. At 29.6 s the film posts as a single WhatsApp status
+rather than being cut in two at the thirty-second mark, so the scenes are timed
+against that ceiling rather than allowed to sprawl.
+
+The portrait (`couple.jpg`) is masked into an arch, which is the shape
+stationery uses and which means the top of the frame falls on empty backdrop
+instead of cropping anyone. It is tinted toward whichever palette is running so
+the photograph's own warm backdrop does not fight the page, and on the dark
+theme it is brought down in brightness as well, since a bright photograph on
+navy reads as a hole rather than a picture. Both are theme tokens
+(`--photo-tint`, `--photo-filter`), so a new palette tunes the photograph the
+same way it tunes everything else.
 
 ### Voice
 
@@ -28,10 +42,12 @@ voice, not a third party's. It reads *join us for **our** baby shower* and
 hosts' signature rather than as the subject of someone else's announcement.
 This matters if the wording is ever edited: keep the first person.
 
-The soundtrack is a bright, celebratory setting of *Ah! vous dirai-je, maman* —
-the Twinkle Twinkle Little Star melody, which is public domain — in C major at
-126 BPM over a I-V-vi-IV flavoured harmony. Every instrument is synthesised
-from scratch in `music.py`, so no licensed audio is used:
+### Soundtrack
+
+A bright, celebratory setting of *Ah! vous dirai-je, maman* — the Twinkle
+Twinkle Little Star melody, which is public domain — in C major at 126 BPM over
+a I-V-vi-IV flavoured harmony, seven phrases long. Every instrument is
+synthesised from scratch in `music.py`, so no licensed audio is used:
 
 | Voice | How it is made |
 |---|---|
@@ -39,10 +55,14 @@ from scratch in `music.py`, so no licensed audio is used:
 | Marimba | Wooden bar, running eighth-note ostinato under the melody. |
 | Plucked chords | Karplus-Strong nylon string. |
 | Bass | Round sine with a little second harmonic, so it survives a phone speaker. |
+| Triangle | Struck bar at 3.1 kHz, marking each bar. |
 | Shaker and claps | Shaped noise transients. |
 
 The arrangement adds a voice per phrase, so the film lifts about 3 dB from the
-first phrase to the last instead of sitting still.
+first phrase to the last instead of sitting still. The tune itself is six
+phrases; the seventh is its last line said once more, which gives the film an
+ending rather than a stop. The confetti burst is placed on a chord change
+rather than near one, so the picture and the music land together.
 
 ## Themes
 
@@ -75,7 +95,8 @@ which puts all six side by side for choosing between them.
 |---|---|
 | `invite.html` | The invitation itself. Open it in a browser and it plays. |
 | `fonts.css` | Parisienne, Cormorant Garamond and Quicksand, embedded as base64 so nothing loads from the network. |
-| `render.js` | Frame-accurate renderer: pauses the document timeline, seeks each frame, pipes PNGs into ffmpeg. |
+| `couple.jpg` | The portrait used in scene four. |
+| `render.js` | Frame-accurate renderer: pauses the document timeline, seeks each frame, pipes JPEG frames into ffmpeg. |
 | `music.py` | Synthesises the soundtrack to `out/music.wav`. |
 | `build.sh` | Runs the whole pipeline end to end. |
 | `out/simran-akshat-baby-shower-<theme>.mp4` | The finished film, with the soundtrack. |
@@ -101,12 +122,14 @@ depends on how fast the machine happens to be.
 Handy while editing:
 
 ```bash
-node render.js --preview       # stills at nine points in the timeline
-node render.js --poster 14.4   # one still at a chosen second
+node render.js --preview       # stills across the timeline
+node render.js --poster 12.5   # one still at a chosen second
 ```
 
 ## Editing the details
 
-All the wording lives in `invite.html`, in the five `<div class="scene">`
+All the wording lives in `invite.html`, in the six `<div class="scene">`
 blocks. The scene timings are the `T` table in the script at the bottom of that
 file; `window.TOTAL` is the length of the film and must cover the last scene.
+If you lengthen it, keep the total under 30 s or WhatsApp will split the status
+in two, and remember that `music.py` is timed to the same number.

@@ -29,7 +29,7 @@ for THEME in "${THEMES[@]}"; do
   node render.js --theme "$THEME"
 
   echo "==> poster still"
-  node render.js --theme "$THEME" --poster 14.4
+  node render.js --theme "$THEME" --poster 12.5
 
   echo "==> muxing audio"
   "$FFMPEG" -y -hide_banner -loglevel error \
