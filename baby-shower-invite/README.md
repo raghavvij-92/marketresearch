@@ -14,11 +14,19 @@ for WhatsApp status, Instagram stories, and plain old sharing in a group chat.
 
 Five scenes, gender-neutral throughout since the baby's gender is a surprise:
 
-1. **Twinkle, twinkle** — a gold star and the opening couplet.
+1. **Twinkle, twinkle** — a gold sparkle and the opening couplet.
 2. **Pink or blue?** — two balloons and a question mark.
 3. **The invitation** — a botanical wreath around *Baby Shower*, and the names.
 4. **When & where** — the date lockup and the venue.
-5. **Come shower them with love** — a confetti burst and the closing card.
+5. **Come celebrate with us** — a confetti burst and the closing card.
+
+### Voice
+
+Simran and Akshat send this themselves, so every line is written in their
+voice, not a third party's. It reads *join us for **our** baby shower* and
+*come celebrate with **us***, and the names sit at the foot of the card as the
+hosts' signature rather than as the subject of someone else's announcement.
+This matters if the wording is ever edited: keep the first person.
 
 The soundtrack is a bright, celebratory setting of *Ah! vous dirai-je, maman* —
 the Twinkle Twinkle Little Star melody, which is public domain — in C major at

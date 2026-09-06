@@ -140,6 +140,35 @@ def bass(freq, dur, vel=1.0):
     return out * env * (0.16 * vel)
 
 
+def pad(freq, dur, vel=1.0):
+    """A warm sustain under the arrangement — what keeps it from sounding
+    like a toy. Two barely detuned sines plus a quiet octave, swelling in."""
+    t = np.arange(int((dur + 0.7) * SR)) / SR
+    v = (np.sin(2 * np.pi * freq * t)
+         + 0.68 * np.sin(2 * np.pi * freq * 1.0018 * t + 1.1)
+         + 0.22 * np.sin(2 * np.pi * freq * 2 * t + 0.4)
+         + 0.09 * np.sin(2 * np.pi * freq * 3 * t + 2.2))
+    env = np.ones_like(t)
+    a = int(0.30 * SR)
+    env[:a] = np.linspace(0, 1, a) ** 1.5
+    r = int(0.65 * SR)
+    env[-r:] *= np.linspace(1, 0, r) ** 1.3
+    vib = 1.0 + 0.003 * np.sin(2 * np.pi * 4.6 * t)
+    return v * env * vib * (0.030 * vel)
+
+
+def triangle(vel=1.0):
+    """A struck triangle on the downbeat: brighter and finer than a clap."""
+    t = np.arange(int(1.1 * SR)) / SR
+    out = np.zeros_like(t)
+    for ratio, amp, dec in [(1.0, 1.0, 0.55), (2.41, 0.7, 0.42),
+                            (4.17, 0.5, 0.30), (6.83, 0.3, 0.20)]:
+        out += amp * np.exp(-t / dec) * np.sin(2 * np.pi * 3140 * ratio * t
+                                               + rng.uniform(0, 6.28))
+    out *= np.minimum(np.arange(len(t)) / (0.002 * SR), 1.0)
+    return out * (0.030 * vel)
+
+
 def shaker(vel=1.0):
     n = int(0.09 * SR)
     x = rng.normal(0, 1, n)
@@ -252,7 +281,7 @@ for pi, phrase in enumerate(MELODY):
         figure = [voices[0], voices[1], voices[2], voices[1]]
         for ei, nm in enumerate(figure):
             v = 0.95 if ei == 0 else 0.62
-            add(marimba(hz(nm), v * (0.75 + 0.05 * pi)),
+            add(marimba(hz(nm), v * (0.60 + 0.05 * pi)),
                 base + ei * 0.5 * BEAT, pan=0.30 - 0.12 * ei)
 
     # ---- plucked chords, from phrase two onward ------------------------
@@ -274,14 +303,27 @@ for pi, phrase in enumerate(MELODY):
     # ---- shaker through the whole phrase -------------------------------
     for e in range(16):
         t_e = p0 + e * 0.5 * BEAT
-        v = (1.0 if e % 2 == 0 else 0.55) * (0.55 + 0.09 * pi)
+        v = (1.0 if e % 2 == 0 else 0.55) * (0.38 + 0.07 * pi)
         add(shaker(v), t_e, pan=0.42 if e % 2 else -0.38)
 
-    # ---- claps on two and four, from phrase three onward ---------------
+    # ---- warm pad under the chords, from phrase three onward -----------
+    if pi >= 2:
+        for ci, ch in enumerate(chords):
+            base = p0 + ci * 2 * BEAT
+            for vi, nm in enumerate(chord_notes(ch, 3)):
+                add(pad(hz(nm), 2 * BEAT, (1.0 - 0.10 * vi) * (0.7 + 0.1 * pi)),
+                    base, pan=-0.40 + 0.40 * vi)
+
+    # ---- a triangle marks the bar, from phrase three onward ------------
     if pi >= 2:
         for bar in range(2):
+            add(triangle(0.75 + 0.06 * pi), p0 + bar * 4 * BEAT, pan=0.30)
+
+    # ---- and only the last two phrases get hands ----------------------
+    if pi >= 4:
+        for bar in range(2):
             for b in (1, 3):
-                add(clap(0.75 + 0.05 * pi), p0 + (bar * 4 + b) * BEAT, pan=0.0)
+                add(clap(0.55), p0 + (bar * 4 + b) * BEAT, pan=0.0)
 
 # ---- curtain-raiser: a rising marimba run into the first downbeat --------
 for k, nm in enumerate(['C4', 'E4', 'G4', 'C5', 'E5']):
@@ -293,7 +335,8 @@ for k in range(4):
 # ---- a sparkle where the confetti bursts (scene E, t = 22.0) -------------
 for k, nm in enumerate(['C6', 'E6', 'G6', 'C7', 'E7']):
     add(glock(hz(nm), 0.70 - 0.07 * k), 22.00 + k * 0.085, pan=-0.34 + 0.17 * k)
-add(clap(1.0), 22.00, pan=0.0)
+add(triangle(1.35), 22.00, pan=0.0)
+add(clap(0.6), 22.00, pan=0.0)
 
 # ---- the last chord, left ringing ---------------------------------------
 END = START + 6 * PHRASE                     # 24.16 s

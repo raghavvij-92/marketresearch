@@ -151,8 +151,8 @@ body.seek *,body.seek *::before,body.seek *::after{
 
 /* ---------- typography -------------------------------------- */
 .label{
-  font-family:'Quicksand',sans-serif;font-weight:600;font-size:25px;
-  letter-spacing:.52em;text-transform:uppercase;color:var(--sage-deep);
+  font-family:'Quicksand',sans-serif;font-weight:600;font-size:24px;
+  letter-spacing:.54em;text-transform:uppercase;color:var(--sage-deep);
   text-indent:.52em;
 }
 .serif{font-family:'Cormorant Garamond',serif;color:var(--ink)}
@@ -172,7 +172,7 @@ body.seek *,body.seek *::before,body.seek *::after{
   display:flex;align-items:center;justify-content:center;margin:34px 0 30px}
 #wreath{position:absolute;left:0;top:0}
 .wreath-inner{position:relative;display:flex;flex-direction:column;align-items:center}
-#c3{margin-bottom:20px}
+#c3{margin-bottom:22px;color:var(--gold)}
 .rule{display:flex;align-items:center;gap:20px;color:var(--gold)}
 .rule i{display:block;height:1px;width:120px;background:linear-gradient(90deg,transparent,currentColor)}
 .rule i.r{background:linear-gradient(90deg,currentColor,transparent)}
@@ -192,9 +192,9 @@ body.seek *,body.seek *::before,body.seek *::after{
 .venue-line{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:42px;line-height:1.62;color:var(--ink-soft)}
 
 /* question-mark scene */
-.qwrap{display:flex;align-items:flex-end;justify-content:center;gap:56px}
-.qmark{font-family:'Parisienne',cursive;font-size:230px;line-height:1;color:var(--gold);
-  text-shadow:0 12px 30px rgba(194,160,92,.28)}
+.qwrap{display:flex;align-items:flex-end;justify-content:center;gap:70px}
+.qmark{font-family:'Parisienne',cursive;font-size:196px;line-height:1;color:var(--gold);
+  text-shadow:0 10px 26px rgba(194,160,92,.22)}
 .qbal{display:flex;flex-direction:column;align-items:center}
 .qbal .cap{font-family:'Quicksand',sans-serif;font-weight:600;font-size:26px;letter-spacing:.34em;
   text-indent:.34em;text-transform:uppercase;margin-top:26px}
@@ -221,6 +221,9 @@ body.seek *,body.seek *::before,body.seek *::after{
 }
 @keyframes breathe{from{transform:scale(.86);opacity:.6}to{transform:scale(1.06);opacity:1}}
 
+.satellite{transform-box:fill-box;transform-origin:center;
+  animation-name:twinkle;animation-duration:2.8s;animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate}
 .spin{animation-name:spin;animation-duration:44s;animation-timing-function:linear;animation-iteration-count:infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -242,15 +245,30 @@ body.seek *,body.seek *::before,body.seek *::after{
   <!-- ============ SCENE A — twinkle little star ============ -->
   <div class="scene" id="scA">
     <div class="glow" style="top:462px"></div>
-    <svg width="300" height="300" viewBox="0 0 100 100" style="margin-bottom:56px" class="pop" id="heroStar">
+    <svg width="336" height="336" viewBox="0 0 120 120" style="margin-bottom:50px" class="pop" id="heroStar">
       <defs>
-        <linearGradient id="gstar" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#f3d288"/><stop offset="100%" stop-color="#c2a05c"/>
+        <linearGradient id="gstar" x1="0.2" y1="0" x2="0.8" y2="1">
+          <stop offset="0%" stop-color="#f7e2ab"/>
+          <stop offset="46%" stop-color="#dcb96f"/>
+          <stop offset="100%" stop-color="#b9944d"/>
         </linearGradient>
       </defs>
-      <path d="M50 6 L61.2 37.4 L94 38.6 L68.2 58.8 L77.2 90.4 L50 71.5 L22.8 90.4 L31.8 58.8 L6 38.6 L38.8 37.4 Z"
-            fill="url(#gstar)" stroke="#b28f4c" stroke-width="1.1" stroke-linejoin="round"/>
+      <g transform="translate(60,60)">
+        <path d="M0 -54 C3.4 -20 12 -8.4 54 0 C12 8.4 3.4 20 0 54 C-3.4 20 -12 8.4 -54 0 C-12 -8.4 -3.4 -20 0 -54 Z"
+              fill="url(#gstar)"/>
+        <path d="M0 -54 C3.4 -20 12 -8.4 54 0 C12 8.4 3.4 20 0 54 C-3.4 20 -12 8.4 -54 0 C-12 -8.4 -3.4 -20 0 -54 Z"
+              fill="none" stroke="#fffaf0" stroke-width="0.65" opacity=".8"/>
+        <path d="M0 -29 C1.6 -10.6 6 -4.5 29 0 C6 4.5 1.6 10.6 0 29 C-1.6 10.6 -6 4.5 -29 0 C-6 -4.5 -1.6 -10.6 0 -29 Z"
+              fill="#fffdf6" opacity=".34"/>
+      </g>
+      <g class="satellite" style="animation-delay:-1.1s">
+        <path d="M97 27 C97.9 34.6 100.4 37.1 108 38 C100.4 38.9 97.9 41.4 97 49 C96.1 41.4 93.6 38.9 86 38 C93.6 37.1 96.1 34.6 97 27 Z" fill="#e3c281"/>
+      </g>
+      <g class="satellite" style="animation-delay:-2.6s">
+        <path d="M21 84 C21.7 89.9 23.6 91.8 29.5 92.5 C23.6 93.2 21.7 95.1 21 101 C20.3 95.1 18.4 93.2 12.5 92.5 C18.4 91.8 20.3 89.9 21 84 Z" fill="#d9b878"/>
+      </g>
     </svg>
+
     <div class="rhyme">
       <div class="up" id="a1">Twinkle, twinkle, little star&hellip;</div>
       <div class="up" id="a2">how we wonder <span class="em">who you are.</span></div>
@@ -259,7 +277,7 @@ body.seek *,body.seek *::before,body.seek *::after{
 
   <!-- ============ SCENE B — pink or blue ============ -->
   <div class="scene" id="scB">
-    <div class="label up" id="b0" style="margin-bottom:64px">A little surprise is on the way</div>
+    <div class="label up" id="b0" style="margin-bottom:64px">A little someone is on the way</div>
     <div class="qwrap">
       <div class="qbal pop" id="b1">
         <div class="bob" style="animation-delay:-.4s">
@@ -276,14 +294,14 @@ body.seek *,body.seek *::before,body.seek *::after{
       </div>
     </div>
     <div class="rhyme up" id="b4" style="margin-top:78px">
-      Pink or blue, we haven't a clue &mdash;<br>
-      <span class="em">but the love is already here.</span>
+      Pink or blue, we can hardly wait &mdash;<br>
+      <span class="em">and the love is already here.</span>
     </div>
   </div>
 
   <!-- ============ SCENE C — the invitation ============ -->
   <div class="scene" id="scC">
-    <div class="label fade" id="c0">Please join us for the</div>
+    <div class="label fade" id="c0">Please join us for our</div>
 
     <div class="wreath-wrap">
       <svg id="wreath" width="900" height="900" viewBox="0 0 900 900"></svg>
@@ -297,7 +315,7 @@ body.seek *,body.seek *::before,body.seek *::after{
       </div>
     </div>
 
-    <div class="label fade" id="c3">Of</div>
+    <div class="label fade" id="c3">With love</div>
     <div class="names wipe" id="c4">Simran &amp; Akshat</div>
   </div>
 
@@ -327,7 +345,7 @@ body.seek *,body.seek *::before,body.seek *::after{
   <!-- ============ SCENE E — closing ============ -->
   <div class="scene" id="scE">
     <div id="confettiHost"></div>
-    <div class="script pop" id="e1" style="font-size:120px;line-height:1.2">Come shower them<br>with love</div>
+    <div class="script pop" id="e1" style="font-size:126px;line-height:1.22">Come celebrate<br>with us</div>
     <div class="rule fade" id="e2" style="margin:52px 0 46px"><i></i>
       <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" fill="#c2a05c"/></svg>
       <i class="r"></i></div>
@@ -494,19 +512,30 @@ for(let i=0;i<26;i++){
 /* ---- confetti burst for scene E ---- */
 (function(){
   const host = document.getElementById('confettiHost');
-  const cols=['#f2a49b','#8fbedd','#b6dc96','#f6cf6d','#d3aee4','#f7bc8d','#d4ab52'];
-  for(let i=0;i<64;i++){
-    const a = (i/64)*Math.PI*2 + rr(-.16,.16);
-    const dist = rr(320,760);
+  /* gold and champagne carry it; the pastels are accents, not the subject */
+  const cols=['#d4ab52','#e3c281','#f0dcae','#f7efdc','#eaa79e','#9dc3e0','#bcd9a4','#d9bce8'];
+  const weight=[3,3,3,2,1,1,1,1];
+  const bag=[];
+  cols.forEach(function(c,i){ for(let k=0;k<weight[i];k++) bag.push(c); });
+  for(let i=0;i<58;i++){
+    const a = (i/58)*Math.PI*2 + rr(-.17,.17);
+    const dist = rr(300,740);
     const c = document.createElement('div');
     c.className='confetti';
-    const w = rr(9,20), h = rr(9,26);
-    c.style.cssText='width:'+w+'px;height:'+h+'px;background:'+pick(cols)+';'+
-      'border-radius:'+(rnd()<.35?'50%':'3px')+';'+
+    const col = bag[Math.floor(rnd()*bag.length)];
+    const sparkle = (i % 4 === 1);
+    const w = sparkle ? rr(11,20) : rr(6,15);
+    const h = sparkle ? w : rr(7,20);
+    c.style.cssText='width:'+w+'px;height:'+h+'px;'+
+      (sparkle ? '' : 'background:'+col+';border-radius:'+(rnd()<.4?'50%':'2px')+';')+
       '--tx:'+(Math.cos(a)*dist).toFixed(1)+'px;'+
-      '--ty:'+(Math.sin(a)*dist*0.95 + 180).toFixed(1)+'px;'+
-      '--rot:'+rr(-900,900)+'deg;'+
-      'animation-duration:'+rr(2.6,4.1)+'s;animation-delay:'+(T.E.s + 0.15 + rr(0,.5))+'s';
+      '--ty:'+(Math.sin(a)*dist*0.95 + 175).toFixed(1)+'px;'+
+      '--rot:'+rr(-820,820)+'deg;'+
+      'animation-duration:'+rr(2.7,4.2)+'s;animation-delay:'+(T.E.s + 0.15 + rr(0,.5))+'s';
+    if(sparkle){
+      c.innerHTML='<svg viewBox="0 0 24 24" width="'+w+'" height="'+w+'">'+
+        '<path d="M12 0 C12.9 8.4 15.6 11.1 24 12 C15.6 12.9 12.9 15.6 12 24 C11.1 15.6 8.4 12.9 0 12 C8.4 11.1 11.1 8.4 12 0 Z" fill="'+col+'"/></svg>';
+    }
     host.appendChild(c);
   }
 })();
