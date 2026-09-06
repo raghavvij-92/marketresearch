@@ -29,5 +29,15 @@ echo "==> muxing audio"
   -movflags +faststart -shortest \
   out/simran-akshat-baby-shower.mp4
 
+echo "==> silent version, for adding your own audio"
+# stripped from the finished file rather than re-encoded, so the picture is
+# bit-identical to the version with music
+"$FFMPEG" -y -hide_banner -loglevel error \
+  -i out/simran-akshat-baby-shower.mp4 \
+  -map 0:v -c:v copy -an -movflags +faststart \
+  out/simran-akshat-baby-shower-no-audio.mp4
+
 echo "==> done"
-ls -la out/simran-akshat-baby-shower.mp4 out/poster.png
+ls -la out/simran-akshat-baby-shower.mp4 \
+       out/simran-akshat-baby-shower-no-audio.mp4 \
+       out/poster.png

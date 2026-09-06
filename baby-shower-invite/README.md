@@ -53,8 +53,13 @@ first phrase to the last instead of sitting still.
 | `render.js` | Frame-accurate renderer: pauses the document timeline, seeks each frame, pipes PNGs into ffmpeg. |
 | `music.py` | Synthesises the soundtrack to `out/music.wav`. |
 | `build.sh` | Runs the whole pipeline end to end. |
-| `out/simran-akshat-baby-shower.mp4` | The finished film. |
+| `out/simran-akshat-baby-shower.mp4` | The finished film, with the soundtrack. |
+| `out/simran-akshat-baby-shower-no-audio.mp4` | The same film with no audio track, for adding your own music. |
 | `out/poster.png` | A single still, for anywhere a static image is wanted. |
+
+The silent version is not a separate render. Its audio is stripped from the
+finished file with a stream copy, so the two share a bit-identical video
+stream — the picture cannot drift between them.
 
 ## Rebuilding
 
