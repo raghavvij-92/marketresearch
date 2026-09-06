@@ -66,7 +66,8 @@ in the file hard-codes a colour, so a new palette is a new entry and nothing
 more.
 
 Preview one in a browser with `invite.html?theme=blue-pink`, or render it with
-`./build.sh blue-pink`.
+`./build.sh blue-pink`. A full run also writes `out/theme-comparison.jpg`,
+which puts all six side by side for choosing between them.
 
 ## Files
 

@@ -51,6 +51,20 @@ for THEME in "${THEMES[@]}"; do
     -i "out/poster-$THEME.png" -vf scale=540:-1 -q:v 3 "out/poster-$THEME.jpg"
 done
 
+# a single side-by-side of every palette, for choosing between them
+if [ "${#THEMES[@]}" -eq "${#ALL_THEMES[@]}" ]; then
+  echo
+  echo "==> theme comparison sheet"
+  "$FFMPEG" -y -hide_banner -loglevel error \
+    -i out/poster-ivory-sage.jpg   -i out/poster-blue-pink.jpg \
+    -i out/poster-blush-gold.jpg   -i out/poster-powder-mint.jpg \
+    -i out/poster-lilac-butter.jpg -i out/poster-midnight-gold.jpg \
+    -filter_complex "[0]scale=250:-1[a];[1]scale=250:-1[b];[2]scale=250:-1[c];\
+[3]scale=250:-1[d];[4]scale=250:-1[e];[5]scale=250:-1[f];\
+[a][b][c][d][e][f]xstack=inputs=6:layout=0_0|w0_0|w0+w1_0|0_h0|w0_h0|w0+w1_h0" \
+    -frames:v 1 -update 1 -q:v 3 out/theme-comparison.jpg
+fi
+
 echo
 echo "==> done"
 ls -la out/simran-akshat-baby-shower-*.mp4
