@@ -12,9 +12,13 @@
  * against a PNG reference, a PNG capture through 4:2:0 lands at 40.9 dB and a
  * JPEG q100 capture at 40.7 dB. The 0.2 dB buys a five-fold faster render.
  *
- *   node render.js                 -> renders the full MP4
- *   node render.js --preview       -> writes a handful of stills for review
- *   node render.js --poster 12.4   -> writes a single still at t = 12.4s
+ *   node render.js                       -> renders the full MP4
+ *   node render.js --theme blue-pink     -> the same, in another palette
+ *   node render.js --preview             -> stills for review
+ *   node render.js --poster 12.4         -> a single still at t = 12.4s
+ *
+ * Theme keys are the keys of THEMES in invite.html. Every output is suffixed
+ * with the theme, so the palettes never overwrite one another.
  */
 const { chromium } = require('playwright');
 const { spawn } = require('child_process');
@@ -29,15 +33,26 @@ const HEIGHT = 1920;
 const FFMPEG = process.env.FFMPEG_BIN ||
   '/usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2';
 
+function argValue(flag, fallback) {
+  const i = process.argv.indexOf(flag);
+  return i > -1 && process.argv[i + 1] ? process.argv[i + 1] : fallback;
+}
+const THEME = argValue('--theme', 'ivory-sage');
+
 async function openInvite(browser) {
   const page = await browser.newPage({
     viewport: { width: WIDTH, height: HEIGHT },
     deviceScaleFactor: 1,
   });
-  await page.goto('file://' + path.join(DIR, 'invite.html'));
+  await page.goto('file://' + path.join(DIR, 'invite.html') + '?theme=' + THEME);
   await page.waitForFunction('window.__ready === true', null, { timeout: 30000 });
   await page.evaluate(() => document.body.classList.add('seek'));
   await page.waitForTimeout(400); // let fonts/filters settle
+  const applied = await page.evaluate(() => window.THEME);
+  if (applied !== THEME) {
+    throw new Error(`theme "${THEME}" is not defined in invite.html (page fell back to "${applied}")`);
+  }
+  console.log(`theme: ${THEME} (${await page.evaluate(() => window.THEME_LABEL)})`);
   return page;
 }
 
@@ -60,8 +75,9 @@ async function seek(page, t) {
   if (posterFlag > -1) {
     const t = parseFloat(process.argv[posterFlag + 1]);
     await seek(page, t);
-    await page.screenshot({ path: path.join(OUT, 'poster.png') });
-    console.log('poster.png written at t=' + t);
+    const name = `poster-${THEME}.png`;
+    await page.screenshot({ path: path.join(OUT, name) });
+    console.log(`${name} written at t=${t}`);
     await browser.close();
     return;
   }
@@ -70,7 +86,7 @@ async function seek(page, t) {
     const marks = [1.6, 3.2, 7.4, 12.6, 14.4, 18.2, 20.6, 23.4, 25.6];
     for (const t of marks) {
       await seek(page, t);
-      await page.screenshot({ path: path.join(OUT, 'preview-' + t.toFixed(1) + '.png') });
+      await page.screenshot({ path: path.join(OUT, `preview-${THEME}-${t.toFixed(1)}.png`) });
     }
     console.log('previews written for t =', marks.join(', '));
     await browser.close();
@@ -78,7 +94,7 @@ async function seek(page, t) {
   }
 
   const frames = Math.round(total * FPS);
-  const silent = path.join(OUT, 'silent.mp4');
+  const silent = path.join(OUT, `silent-${THEME}.mp4`);
   const ff = spawn(FFMPEG, [
     '-y', '-hide_banner', '-loglevel', 'error',
     '-f', 'image2pipe', '-framerate', String(FPS), '-i', 'pipe:0',

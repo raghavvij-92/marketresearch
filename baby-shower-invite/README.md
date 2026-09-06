@@ -44,6 +44,30 @@ from scratch in `music.py`, so no licensed audio is used:
 The arrangement adds a voice per phrase, so the film lifts about 3 dB from the
 first phrase to the last instead of sitting still.
 
+## Themes
+
+The film ships in six palettes. They are the same animation and the same
+soundtrack; only the colour changes, so picking one is purely a matter of
+taste.
+
+| Key | Palette |
+|---|---|
+| `blue-pink` | Blue & Pink. Cool blue on one side, warm pink on the other, and a wreath that alternates blue-grey foliage with pink blossom. |
+| `ivory-sage` | Ivory & Sage. Cream paper, green wreath, gold rule. |
+| `blush-gold` | Blush & Gold. Warm rose and peach with champagne. |
+| `powder-mint` | Powder & Mint. Fresh aqua and green. |
+| `lilac-butter` | Lilac & Butter. Lavender with soft yellow. |
+| `midnight-gold` | Midnight & Gold. Deep navy, ivory lettering, gold rule and a sky of stars. |
+
+A theme is one entry in the `THEMES` table at the foot of `invite.html`: the
+CSS custom properties for the palette, plus the colour sets the decorative
+generators draw from (balloons, petals, confetti, stars, wreath). Nothing else
+in the file hard-codes a colour, so a new palette is a new entry and nothing
+more.
+
+Preview one in a browser with `invite.html?theme=blue-pink`, or render it with
+`./build.sh blue-pink`.
+
 ## Files
 
 | File | What it is |
@@ -53,9 +77,9 @@ first phrase to the last instead of sitting still.
 | `render.js` | Frame-accurate renderer: pauses the document timeline, seeks each frame, pipes PNGs into ffmpeg. |
 | `music.py` | Synthesises the soundtrack to `out/music.wav`. |
 | `build.sh` | Runs the whole pipeline end to end. |
-| `out/simran-akshat-baby-shower.mp4` | The finished film, with the soundtrack. |
-| `out/simran-akshat-baby-shower-no-audio.mp4` | The same film with no audio track, for adding your own music. |
-| `out/poster.png` | A single still, for anywhere a static image is wanted. |
+| `out/simran-akshat-baby-shower-<theme>.mp4` | The finished film, with the soundtrack. |
+| `out/simran-akshat-baby-shower-<theme>-no-audio.mp4` | The same film with no audio track, for adding your own music. |
+| `out/poster-<theme>.jpg` | A single still, for anywhere a static image is wanted. |
 
 The silent version is not a separate render. Its audio is stripped from the
 finished file with a stream copy, so the two share a bit-identical video
@@ -64,7 +88,8 @@ stream — the picture cannot drift between them.
 ## Rebuilding
 
 ```bash
-./build.sh
+./build.sh                # every theme
+./build.sh blue-pink      # just one
 ```
 
 Everything is animated with CSS animations, which is what makes the render
