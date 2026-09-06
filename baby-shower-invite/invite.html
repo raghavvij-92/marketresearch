@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Simran &amp; Akshat — Baby Shower Invitation</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* ===========================================================
+   Baby shower invitation — animated 1080 x 1920 (9:16)
+   Every animation is a CSS animation on the document timeline,
+   so the renderer can pause everything and seek frame by frame.
+   =========================================================== */
+
+:root{
+  --cream:#fbf4ea;
+  --cream-2:#f3e7d6;
+  --ink:#4a4038;
+  --ink-soft:#6d6157;
+  --sage:#7f9a7a;
+  --sage-deep:#5b7658;
+  --gold:#c2a05c;
+  --gold-soft:#e0c489;
+  --blush:#e6bdb6;
+  --sky:#a8c4d8;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
+
+body.seek *,body.seek *::before,body.seek *::after{
+  animation-play-state:paused !important;
+}
+
+#stage{
+  position:relative;width:1080px;height:1920px;overflow:hidden;
+  font-kerning:normal;text-rendering:geometricPrecision;
+  background:
+    radial-gradient(120% 80% at 50% 8%,  #fffaf3 0%, rgba(255,250,243,0) 62%),
+    radial-gradient(90% 55% at 12% 88%,  rgba(168,196,216,.30) 0%, rgba(168,196,216,0) 70%),
+    radial-gradient(95% 55% at 90% 78%,  rgba(230,189,182,.30) 0%, rgba(230,189,182,0) 70%),
+    radial-gradient(80% 45% at 82% 14%,  rgba(206,224,195,.32) 0%, rgba(206,224,195,0) 72%),
+    linear-gradient(168deg, var(--cream) 0%, #f7ecdd 46%, var(--cream-2) 100%);
+}
+
+/* paper grain ------------------------------------------------ */
+#grain{
+  position:absolute;inset:0;pointer-events:none;opacity:.30;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='0.42'/></svg>");
+}
+#curtain{
+  position:absolute;inset:0;pointer-events:none;background:#fdf7ee;
+  animation:curtain var(--total,26.6s) linear both;
+}
+@keyframes curtain{
+  0%{opacity:1} 3.4%{opacity:0} 96.2%{opacity:0} 100%{opacity:1}
+}
+#vignette{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(78% 62% at 50% 46%, rgba(0,0,0,0) 55%, rgba(104,84,60,.16) 100%);
+}
+
+/* ---------- decorative background layers -------------------- */
+.cloud{
+  position:absolute;background:#fff;border-radius:50%;
+  filter:blur(26px);opacity:.55;
+  animation-name:drift;animation-timing-function:linear;animation-iteration-count:infinite;
+}
+@keyframes drift{from{transform:translateX(-320px)}to{transform:translateX(1400px)}}
+
+.star{
+  position:absolute;
+  animation-name:twinkle;animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate;
+}
+@keyframes twinkle{
+  0%{opacity:.12;transform:scale(.55) rotate(0deg)}
+  100%{opacity:.95;transform:scale(1.12) rotate(18deg)}
+}
+
+.balloon-rise{position:absolute;bottom:-360px;animation-name:rise;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes rise{from{transform:translateY(0)}to{transform:translateY(-2400px)}}
+.balloon-sway{animation-name:sway;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-direction:alternate}
+@keyframes sway{from{transform:translateX(-26px) rotate(-4deg)}to{transform:translateX(26px) rotate(4deg)}}
+.balloon-body{
+  width:var(--bw);height:calc(var(--bw)*1.19);
+  border-radius:50% 50% 50% 50% / 44% 44% 58% 58%;
+  background:
+    radial-gradient(38% 32% at 32% 26%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 60%),
+    radial-gradient(120% 110% at 62% 78%, rgba(0,0,0,.09) 0%, rgba(0,0,0,0) 55%),
+    var(--bc);
+  position:relative;
+}
+.balloon-body::after{ /* knot */
+  content:"";position:absolute;left:50%;bottom:-11px;width:20px;height:16px;
+  transform:translateX(-50%);background:var(--bc);
+  clip-path:polygon(50% 0,100% 100%,0 100%);opacity:.92;
+}
+.balloon-string{position:absolute;left:50%;top:calc(var(--bw)*1.19 + 12px);transform:translateX(-50%)}
+
+.petal{
+  position:absolute;top:-80px;border-radius:60% 40% 55% 45% / 50% 60% 40% 50%;
+  animation-name:fall;animation-timing-function:linear;animation-iteration-count:infinite;
+}
+@keyframes fall{
+  0%{transform:translate(0,0) rotate(0deg);opacity:0}
+  8%{opacity:.85}
+  92%{opacity:.85}
+  100%{transform:translate(var(--dx),2080px) rotate(760deg);opacity:0}
+}
+
+/* ---------- gold frame -------------------------------------- */
+#frame{position:absolute;inset:0;pointer-events:none}
+#frame > rect{
+  animation-name:draw;animation-duration:2.1s;animation-timing-function:cubic-bezier(.65,.02,.28,1);
+  animation-fill-mode:both;
+}
+@keyframes draw{from{stroke-dashoffset:var(--len)}to{stroke-dashoffset:0}}
+.corner{animation:cornerIn .9s ease-out both;transform-box:fill-box;transform-origin:20% 20%}
+@keyframes cornerIn{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+
+/* ---------- scenes ------------------------------------------ */
+.scene::before{
+  content:"";position:absolute;left:50%;top:50%;width:1160px;height:1080px;
+  transform:translate(-50%,-50%);pointer-events:none;
+  background:radial-gradient(closest-side,rgba(253,247,238,.90) 0%,rgba(253,247,238,.72) 42%,rgba(253,247,238,0) 78%);
+}
+.scene{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  animation-name:sceneLife;animation-timing-function:linear;animation-fill-mode:both;
+  padding:0 110px;
+}
+@keyframes sceneLife{
+  0%{opacity:0}
+  13%{opacity:1}
+  87%{opacity:1}
+  100%{opacity:0}
+}
+
+/* entrance helpers (parent .scene handles the exit fade) */
+.up   {animation-name:up;   animation-duration:1.15s;animation-timing-function:cubic-bezier(.19,1,.22,1);animation-fill-mode:both}
+.down {animation-name:down; animation-duration:1.15s;animation-timing-function:cubic-bezier(.19,1,.22,1);animation-fill-mode:both}
+.pop  {animation-name:pop;  animation-duration:1.0s; animation-timing-function:cubic-bezier(.2,1.3,.35,1);animation-fill-mode:both}
+.wipe {animation-name:wipe; animation-duration:1.3s; animation-timing-function:cubic-bezier(.7,0,.2,1);  animation-fill-mode:both}
+.fade {animation-name:fade; animation-duration:1.3s; animation-timing-function:ease-out;animation-fill-mode:both}
+@keyframes up  {from{opacity:0;transform:translateY(46px)} to{opacity:1;transform:none}}
+@keyframes down{from{opacity:0;transform:translateY(-40px)}to{opacity:1;transform:none}}
+@keyframes pop {from{opacity:0;transform:scale(.82)}       to{opacity:1;transform:scale(1)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes wipe{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+
+/* ---------- typography -------------------------------------- */
+.label{
+  font-family:'Quicksand',sans-serif;font-weight:600;font-size:25px;
+  letter-spacing:.52em;text-transform:uppercase;color:var(--sage-deep);
+  text-indent:.52em;
+}
+.serif{font-family:'Cormorant Garamond',serif;color:var(--ink)}
+.script{font-family:'Parisienne',cursive;color:var(--ink)}
+
+.rhyme{font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:60px;line-height:1.5;color:var(--ink-soft)}
+.rhyme .em{font-style:normal;font-weight:500;color:var(--ink)}
+
+.big-script{font-family:'Parisienne',cursive;font-size:186px;line-height:1.0;color:var(--ink);
+  text-shadow:0 3px 0 rgba(255,255,255,.7), 0 16px 34px rgba(122,98,66,.13)}
+.names{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:56px;
+  letter-spacing:.16em;text-indent:.16em;text-transform:uppercase;color:var(--ink);
+  white-space:nowrap}
+
+.wreath-wrap{position:relative;width:900px;height:900px;flex:none;
+  display:flex;align-items:center;justify-content:center;margin:34px 0 30px}
+#wreath{position:absolute;left:0;top:0}
+.wreath-inner{position:relative;display:flex;flex-direction:column;align-items:center}
+#c3{margin-bottom:20px}
+.rule{display:flex;align-items:center;gap:20px;color:var(--gold)}
+.rule i{display:block;height:1px;width:120px;background:linear-gradient(90deg,transparent,currentColor)}
+.rule i.r{background:linear-gradient(90deg,currentColor,transparent)}
+.rule b{font-size:0;line-height:0}
+
+/* date lockup */
+.datebox{display:flex;flex-direction:column;align-items:center;gap:14px}
+.dayname{font-family:'Quicksand',sans-serif;font-weight:600;font-size:34px;letter-spacing:.42em;
+  text-indent:.42em;text-transform:uppercase;color:var(--sage-deep)}
+.datenum{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:188px;line-height:.86;color:var(--ink)}
+.month{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:58px;letter-spacing:.30em;
+  text-indent:.30em;text-transform:uppercase;color:var(--ink)}
+.hline{width:150px;height:1px;background:var(--gold);opacity:.85}
+.timetxt{font-family:'Cormorant Garamond',serif;font-weight:400;font-style:italic;font-size:56px;color:var(--ink-soft)}
+
+.venue-name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:64px;letter-spacing:.045em;color:var(--ink)}
+.venue-line{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:42px;line-height:1.62;color:var(--ink-soft)}
+
+/* question-mark scene */
+.qwrap{display:flex;align-items:flex-end;justify-content:center;gap:56px}
+.qmark{font-family:'Parisienne',cursive;font-size:230px;line-height:1;color:var(--gold);
+  text-shadow:0 12px 30px rgba(194,160,92,.28)}
+.qbal{display:flex;flex-direction:column;align-items:center}
+.qbal .cap{font-family:'Quicksand',sans-serif;font-weight:600;font-size:26px;letter-spacing:.34em;
+  text-indent:.34em;text-transform:uppercase;margin-top:26px}
+.bob{animation-name:bob;animation-duration:3.4s;animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate}
+@keyframes bob{from{transform:translateY(-14px)}to{transform:translateY(14px)}}
+
+/* confetti (final scene) */
+.confetti{position:absolute;left:50%;top:52%;opacity:0;
+  animation-name:burst;animation-timing-function:cubic-bezier(.12,.7,.3,1);animation-fill-mode:both}
+@keyframes burst{
+  0%  {opacity:0;transform:translate(-50%,-50%) translate(0,0) scale(.25) rotate(0deg)}
+  8%  {opacity:1}
+  62% {opacity:1}
+  100%{opacity:0;transform:translate(-50%,-50%) translate(var(--tx),var(--ty)) scale(1) rotate(var(--rot))}
+}
+
+/* glow behind the hero star */
+.glow{
+  position:absolute;width:760px;height:760px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,236,190,.95) 0%,rgba(255,236,190,.42) 34%,rgba(255,236,190,0) 68%);
+  animation-name:breathe;animation-duration:4.2s;animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;animation-direction:alternate;
+}
+@keyframes breathe{from{transform:scale(.86);opacity:.6}to{transform:scale(1.06);opacity:1}}
+
+.spin{animation-name:spin;animation-duration:44s;animation-timing-function:linear;animation-iteration-count:infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.leaf{animation-name:leafIn;animation-duration:.62s;animation-timing-function:cubic-bezier(.2,.9,.3,1);
+  animation-fill-mode:both;transform-box:fill-box;transform-origin:center}
+@keyframes leafIn{from{opacity:0;transform:scale(.15)}to{opacity:.9;transform:scale(1)}}
+
+.footer{position:absolute;left:0;right:0;bottom:96px;text-align:center;
+  font-family:'Quicksand',sans-serif;font-weight:500;font-size:24px;letter-spacing:.44em;
+  text-indent:.44em;text-transform:uppercase;color:rgba(122,105,86,.62);
+  animation:fade 1.6s ease-out both}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bg"></div>
+  <div id="grain"></div>
+
+  <!-- ============ SCENE A — twinkle little star ============ -->
+  <div class="scene" id="scA">
+    <div class="glow" style="top:462px"></div>
+    <svg width="300" height="300" viewBox="0 0 100 100" style="margin-bottom:56px" class="pop" id="heroStar">
+      <defs>
+        <linearGradient id="gstar" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#f3d288"/><stop offset="100%" stop-color="#c2a05c"/>
+        </linearGradient>
+      </defs>
+      <path d="M50 6 L61.2 37.4 L94 38.6 L68.2 58.8 L77.2 90.4 L50 71.5 L22.8 90.4 L31.8 58.8 L6 38.6 L38.8 37.4 Z"
+            fill="url(#gstar)" stroke="#b28f4c" stroke-width="1.1" stroke-linejoin="round"/>
+    </svg>
+    <div class="rhyme">
+      <div class="up" id="a1">Twinkle, twinkle, little star&hellip;</div>
+      <div class="up" id="a2">how we wonder <span class="em">who you are.</span></div>
+    </div>
+  </div>
+
+  <!-- ============ SCENE B — pink or blue ============ -->
+  <div class="scene" id="scB">
+    <div class="label up" id="b0" style="margin-bottom:64px">A little surprise is on the way</div>
+    <div class="qwrap">
+      <div class="qbal pop" id="b1">
+        <div class="bob" style="animation-delay:-.4s">
+          <div class="balloon-body" style="--bw:180px;--bc:#f0c3c3"></div>
+        </div>
+        <div class="cap" style="color:#c98f8f">Pink?</div>
+      </div>
+      <div class="qmark pop" id="b2">?</div>
+      <div class="qbal pop" id="b3">
+        <div class="bob" style="animation-delay:-1.9s">
+          <div class="balloon-body" style="--bw:180px;--bc:#b5cee0"></div>
+        </div>
+        <div class="cap" style="color:#7fa0b8">Blue?</div>
+      </div>
+    </div>
+    <div class="rhyme up" id="b4" style="margin-top:78px">
+      Pink or blue, we haven't a clue &mdash;<br>
+      <span class="em">but the love is already here.</span>
+    </div>
+  </div>
+
+  <!-- ============ SCENE C — the invitation ============ -->
+  <div class="scene" id="scC">
+    <div class="label fade" id="c0">Please join us for the</div>
+
+    <div class="wreath-wrap">
+      <svg id="wreath" width="900" height="900" viewBox="0 0 900 900"></svg>
+      <div class="wreath-inner">
+        <div class="big-script pop" id="c1">Baby<br>Shower</div>
+        <div class="rule fade" id="c2">
+          <i></i>
+          <svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" fill="#c2a05c"/></svg>
+          <i class="r"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="label fade" id="c3">Of</div>
+    <div class="names wipe" id="c4">Simran &amp; Akshat</div>
+  </div>
+
+  <!-- ============ SCENE D — when &amp; where ============ -->
+  <div class="scene" id="scD">
+    <div class="datebox">
+      <div class="dayname down" id="d0">Sunday</div>
+      <div class="hline fade" id="d1"></div>
+      <div class="datenum pop" id="d2">13</div>
+      <div class="hline fade" id="d3"></div>
+      <div class="month up" id="d4">September</div>
+      <div class="timetxt up" id="d5" style="margin-top:22px">four o&rsquo;clock in the afternoon</div>
+    </div>
+
+    <div class="rule fade" id="d6" style="margin:74px 0 62px"><i></i>
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" fill="#c2a05c"/></svg>
+      <i class="r"></i></div>
+
+    <div class="label up" id="d7" style="margin-bottom:30px">Venue</div>
+    <div class="venue-name up" id="d8">Upstairs Bar &amp; Kitchen</div>
+    <div class="venue-line up" id="d9" style="margin-top:16px">
+      ITL Twin Tower, 2nd Floor<br>
+      Netaji Subhash Place, New Delhi
+    </div>
+  </div>
+
+  <!-- ============ SCENE E — closing ============ -->
+  <div class="scene" id="scE">
+    <div id="confettiHost"></div>
+    <div class="script pop" id="e1" style="font-size:120px;line-height:1.2">Come shower them<br>with love</div>
+    <div class="rule fade" id="e2" style="margin:52px 0 46px"><i></i>
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 1.5 L14.4 9.6 L22.5 12 L14.4 14.4 L12 22.5 L9.6 14.4 L1.5 12 L9.6 9.6 Z" fill="#c2a05c"/></svg>
+      <i class="r"></i></div>
+    <div class="rhyme up" id="e3">Your presence is the only gift<br>we could wish for.</div>
+    <div class="names fade" id="e4" style="font-size:40px;margin-top:96px;opacity:.9">Simran &amp; Akshat</div>
+    <div class="label fade" id="e5" style="margin-top:22px">13 &middot; 09 &middot; 2026</div>
+  </div>
+
+  <div id="vignette"></div>
+  <svg id="frame" width="1080" height="1920"></svg>
+  <div id="curtain"></div>
+</div>
+
+<script>
+/* ------------------------------------------------------------------
+   Deterministic scene generation. Everything below runs once, before
+   the renderer pauses the document timeline and seeks frame by frame.
+   ------------------------------------------------------------------ */
+const T = {
+  A:{s:0.90, d:5.00},
+  B:{s:5.40, d:5.30},
+  C:{s:10.20,d:5.90},
+  D:{s:15.60,d:6.90},
+  E:{s:22.00,d:4.70}
+};
+window.TOTAL = 26.6;
+document.documentElement.style.setProperty('--total', window.TOTAL + 's');
+
+/* seeded PRNG so every render is identical */
+let _s = 20260913;
+function rnd(){ _s = (_s*1664525 + 1013904223) % 4294967296; return _s/4294967296; }
+function rr(a,b){ return a + rnd()*(b-a); }
+function pick(a){ return a[Math.floor(rnd()*a.length)]; }
+
+const bg = document.getElementById('bg');
+const NS = 'http://www.w3.org/2000/svg';
+function svgEl(t,attrs){ const e=document.createElementNS(NS,t); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
+
+/* ---- clouds ---- */
+[[ -60, 250, 460, 150, 78],[ 620, 430, 380, 120, 96],[ -120, 1180, 520, 165, 110],
+ [ 700, 1520, 420, 135, 88],[ 180, 860, 300, 100, 124]].forEach(function(c){
+  const d = document.createElement('div');
+  d.className = 'cloud';
+  d.style.cssText = 'left:'+c[0]+'px;top:'+c[1]+'px;width:'+c[2]+'px;height:'+c[3]+'px;'+
+                    'animation-duration:'+c[4]+'s;animation-delay:'+(-rr(0,c[4]))+'s;opacity:'+rr(.32,.6);
+  bg.appendChild(d);
+});
+
+/* ---- twinkling stars ---- */
+for(let i=0;i<44;i++){
+  const size = rr(7,20), x = rr(20,1040), y = rr(40,1870);
+  const s = document.createElement('div');
+  s.className='star';
+  s.style.cssText='left:'+x+'px;top:'+y+'px;width:'+size+'px;height:'+size+'px;'+
+    'animation-duration:'+rr(2.2,4.6)+'s;animation-delay:'+(-rr(0,4))+'s';
+  const col = pick(['#d8bd7c','#e6cf9c','#cbd8c4','#d9c6bf','#c3d3de']);
+  s.innerHTML = '<svg viewBox="0 0 24 24" width="'+size+'" height="'+size+'">'+
+    '<path d="M12 0 C12.9 8.4 15.6 11.1 24 12 C15.6 12.9 12.9 15.6 12 24 C11.1 15.6 8.4 12.9 0 12 C8.4 11.1 11.1 8.4 12 0 Z" fill="'+col+'"/></svg>';
+  bg.appendChild(s);
+}
+
+/* ---- rising balloons ---- */
+const BAL = ['#f0c9c6','#bcd3e2','#cfe0c2','#f3e0ad','#e0cfe6','#f6d8c2'];
+for(let i=0;i<9;i++){
+  /* balloons hug the margins so they never fight the lettering */
+  const w = rr(66,128), dur = rr(26,42);
+  const left = (i >= 7) ? rr(400,620) : (i % 2 ? rr(15,215) : rr(825,1000));
+  const rise = document.createElement('div');
+  rise.className='balloon-rise';
+  rise.style.cssText='left:'+left+'px;animation-duration:'+dur+'s;animation-delay:'+(-rr(0,dur))+
+                     's;opacity:'+(i>=7 ? rr(.22,.34) : rr(.5,.82));
+  const swayEl = document.createElement('div');
+  swayEl.className='balloon-sway';
+  swayEl.style.cssText='animation-duration:'+rr(3.4,6.2)+'s;animation-delay:'+(-rr(0,4))+'s;position:relative';
+  const b = document.createElement('div');
+  b.className='balloon-body';
+  b.style.cssText='--bw:'+w+'px;--bc:'+BAL[i%BAL.length];
+  const str = document.createElement('div');
+  str.className='balloon-string';
+  str.style.setProperty('--bw', w+'px');
+  str.innerHTML='<svg width="34" height="150" viewBox="0 0 34 150"><path d="M17 0 C7 34 27 60 17 92 C9 118 21 132 17 150" fill="none" stroke="rgba(120,104,86,.42)" stroke-width="1.6"/></svg>';
+  swayEl.appendChild(b); swayEl.appendChild(str); rise.appendChild(swayEl); bg.appendChild(rise);
+}
+
+/* ---- drifting petals / soft confetti in the background ---- */
+for(let i=0;i<26;i++){
+  const w = rr(9,20), dur = rr(17,30);
+  const p = document.createElement('div');
+  p.className='petal';
+  p.style.cssText='left:'+rr(0,1060)+'px;width:'+w+'px;height:'+(w*rr(.6,1.05))+'px;'+
+    'background:'+pick(['#eec9c4','#cfe0c2','#f2ddaa','#c6d9e6','#e3d2ea'])+';'+
+    '--dx:'+rr(-160,160)+'px;animation-duration:'+dur+'s;animation-delay:'+(-rr(0,dur))+'s;opacity:.8';
+  bg.appendChild(p);
+}
+
+/* ---- gold frame with corner sprigs ---- */
+(function(){
+  const f = document.getElementById('frame');
+  const outer = svgEl('rect',{x:56,y:56,width:968,height:1808,rx:10,fill:'none',
+                              stroke:'#c2a05c','stroke-width':2.2,opacity:.85});
+  const inner = svgEl('rect',{x:76,y:76,width:928,height:1768,rx:6,fill:'none',
+                              stroke:'#c2a05c','stroke-width':1,opacity:.55});
+  [outer,inner].forEach(function(r,i){
+    const len = 2*(+r.getAttribute('width') + +r.getAttribute('height'));
+    r.style.strokeDasharray = len;
+    r.style.setProperty('--len', len);
+    r.style.animationDelay = (0.25 + i*0.18)+'s';
+    f.appendChild(r);
+  });
+  /* corner sprigs */
+  const sprig = 'M0 0 C 26 4 46 18 58 42 M0 0 C 4 26 18 46 42 58 M14 14 C 30 22 40 34 46 50 M14 14 C 22 30 34 40 50 46';
+  [[76,76,1,1],[1004,76,-1,1],[76,1844,1,-1],[1004,1844,-1,-1]].forEach(function(c,i){
+    const outer = svgEl('g',{transform:'translate('+c[0]+','+c[1]+') scale('+c[2]+','+c[3]+')'});
+    const g = svgEl('g',{});
+    g.setAttribute('class','corner');
+    g.style.animationDelay = (1.55 + i*0.10)+'s';
+    g.appendChild(svgEl('path',{d:sprig,fill:'none',stroke:'#b79a63','stroke-width':2.1,
+                                'stroke-linecap':'round',opacity:.75}));
+    g.appendChild(svgEl('circle',{cx:60,cy:60,r:3.4,fill:'#c2a05c',opacity:.8}));
+    outer.appendChild(g); f.appendChild(outer);
+  });
+})();
+
+/* ---- botanical wreath for scene C ---- */
+(function(){
+  const w = document.getElementById('wreath');
+  const cx=450, cy=450, R=398;
+  const greens=['#88a382','#6f8d6b','#9db597','#7d9c78','#a8bfa2'];
+  let n=0;
+  [[1, 90, 268],[-1, 90, 268]].forEach(function(side){
+    const dir = side[0];
+    for(let a=side[1]; a<=side[2]; a+=7.0){
+      const rad = (dir>0 ? a : 180-a) * Math.PI/180;
+      const ang = rad - Math.PI/2;
+      const rad2 = R + rr(-13,13);
+      const x = cx + Math.cos(ang)*rad2, y = cy + Math.sin(ang)*rad2;
+      const rot = (ang*180/Math.PI) + 90 + rr(-16,16);
+      /* outer group holds the placement, inner group is animated */
+      const outer = svgEl('g',{transform:'translate('+x+','+y+') rotate('+rot+')'});
+      const g = svgEl('g',{});
+      g.setAttribute('class','leaf');
+      g.style.animationDelay = (T.C.s + 0.20 + n*0.016) + 's';
+      const L = rr(16,30), W = rr(6,11.5);
+      const col = greens[n%greens.length];
+      g.appendChild(svgEl('ellipse',{cx:L*0.62,cy:-2,rx:L,ry:W,fill:col,opacity:.88,
+                                     transform:'rotate(-26)'}));
+      g.appendChild(svgEl('ellipse',{cx:-L*0.62,cy:-2,rx:L,ry:W,fill:col,opacity:.72,
+                                     transform:'rotate(26)'}));
+      if(n%7===3) g.appendChild(svgEl('circle',{cx:0,cy:13,r:4.6,fill:'#e3c39a',opacity:.9}));
+      outer.appendChild(g); w.appendChild(outer); n++;
+    }
+  });
+  /* ribbon tie where the two sprays meet */
+  const outer = svgEl('g',{transform:'translate('+cx+','+(cy+R-4)+')'});
+  const tie = svgEl('g',{});
+  tie.setAttribute('class','leaf');
+  tie.style.animationDelay = (T.C.s + 1.05) + 's';
+  tie.appendChild(svgEl('path',{d:'M-14 0 C -36 17 -68 17 -76 0 C -68 -15 -36 -15 -14 0 Z',fill:'#dcc9a6',opacity:.95}));
+  tie.appendChild(svgEl('path',{d:'M14 0 C 36 17 68 17 76 0 C 68 -15 36 -15 14 0 Z',fill:'#dcc9a6',opacity:.95}));
+  tie.appendChild(svgEl('circle',{cx:0,cy:0,r:7,fill:'#c9b48c'}));
+  outer.appendChild(tie); w.appendChild(outer);
+})();
+
+/* ---- confetti burst for scene E ---- */
+(function(){
+  const host = document.getElementById('confettiHost');
+  const cols=['#e8b7b0','#a9c4d8','#cbdfc0','#f0d99a','#d8c3e4','#f2c9a8','#c2a05c'];
+  for(let i=0;i<64;i++){
+    const a = (i/64)*Math.PI*2 + rr(-.16,.16);
+    const dist = rr(320,760);
+    const c = document.createElement('div');
+    c.className='confetti';
+    const w = rr(9,20), h = rr(9,26);
+    c.style.cssText='width:'+w+'px;height:'+h+'px;background:'+pick(cols)+';'+
+      'border-radius:'+(rnd()<.35?'50%':'3px')+';'+
+      '--tx:'+(Math.cos(a)*dist).toFixed(1)+'px;'+
+      '--ty:'+(Math.sin(a)*dist*0.95 + 180).toFixed(1)+'px;'+
+      '--rot:'+rr(-900,900)+'deg;'+
+      'animation-duration:'+rr(2.6,4.1)+'s;animation-delay:'+(T.E.s + 0.15 + rr(0,.5))+'s';
+    host.appendChild(c);
+  }
+})();
+
+/* ---- wire scene + element timings ---- */
+function scene(id,k){
+  const el = document.getElementById(id);
+  el.style.animationDelay = T[k].s+'s';
+  el.style.animationDuration = T[k].d+'s';
+}
+scene('scA','A'); scene('scB','B'); scene('scC','C'); scene('scD','D'); scene('scE','E');
+
+/* delays are relative to the owning scene's start */
+const CUES = {
+  heroStar:['A',0.15], a1:['A',0.55], a2:['A',1.15],
+  b0:['B',0.15], b1:['B',0.45], b2:['B',0.75], b3:['B',0.60], b4:['B',1.15],
+  c0:['C',0.20], c1:['C',0.55], c2:['C',1.15], c3:['C',1.35], c4:['C',1.60],
+  d0:['D',0.15], d1:['D',0.35], d2:['D',0.45], d3:['D',0.55], d4:['D',0.70],
+  d5:['D',0.95], d6:['D',1.25], d7:['D',1.45], d8:['D',1.65], d9:['D',1.90],
+  e1:['E',0.20], e2:['E',0.70], e3:['E',0.90], e4:['E',1.35], e5:['E',1.55]
+};
+for(const id in CUES){
+  const el = document.getElementById(id);
+  if(el) el.style.animationDelay = (T[CUES[id][0]].s + CUES[id][1]) + 's';
+}
+
+/* the hero star keeps a slow shimmer after it lands */
+document.getElementById('heroStar').style.animationDelay = (T.A.s+0.15)+'s';
+
+document.fonts.ready.then(function(){ window.__ready = true; });
+</script>
+</body>
+</html>
