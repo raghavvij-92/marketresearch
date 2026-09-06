@@ -268,7 +268,14 @@ body.seek *,body.seek *::before,body.seek *::after{
   position:relative;
 }
 @keyframes standZoom{from{transform:scale(1)}to{transform:scale(1.038)}}
-.couple-zoom img{width:100%;display:block;filter:var(--photo-filter)}
+.couple-zoom img{
+  width:100%;display:block;
+  /* a close contact shadow plus a longer soft one: without these a cutout
+     reads as pasted on rather than standing in the scene */
+  filter:var(--photo-filter)
+         drop-shadow(0 6px 5px rgba(var(--vig),.30))
+         drop-shadow(0 20px 26px rgba(var(--vig),.20));
+}
 .couple-zoom::after{            /* the theme tint, masked to the silhouette */
   content:"";position:absolute;inset:0;pointer-events:none;
   background:var(--photo-tint);
@@ -277,11 +284,20 @@ body.seek *,body.seek *::before,body.seek *::after{
   mix-blend-mode:var(--photo-blend);
 }
 .couple-shadow{
-  position:absolute;left:50%;bottom:-14px;width:560px;height:64px;
+  position:absolute;left:50%;bottom:-18px;width:620px;height:86px;
   transform:translateX(-50%);border-radius:50%;
-  background:radial-gradient(closest-side,rgba(var(--vig),.42) 0%,rgba(var(--vig),0) 72%);
-  filter:blur(10px);
+  background:
+    radial-gradient(closest-side,rgba(var(--vig),.50) 0%,rgba(var(--vig),.16) 46%,rgba(var(--vig),0) 74%);
+  filter:blur(13px);
   animation:fade 1.5s ease-out both;
+}
+/* a soft warm bloom behind them, so the cut edge meets light rather than a
+   hard change of colour */
+.couple-halo{
+  position:absolute;left:50%;bottom:40px;width:900px;height:1100px;
+  transform:translateX(-50%);pointer-events:none;
+  background:radial-gradient(closest-side,rgba(var(--glow),.42) 0%,rgba(var(--glow),.16) 45%,rgba(var(--glow),0) 75%);
+  animation:fade 1.8s ease-out both;
 }
 .stand-label{position:absolute;left:0;right:0;top:470px;text-align:center}
 
@@ -426,6 +442,7 @@ body.seek *,body.seek *::before,body.seek *::after{
   <div class="scene" id="scP">
     <div class="label fade stand-label" id="p0">Counting down the days</div>
     <div class="couple-stand">
+      <div class="couple-halo" id="p3"></div>
       <div class="couple-shadow" id="p2"></div>
       <div class="couple-in" id="p1">
         <div class="couple-zoom">
@@ -920,6 +937,10 @@ if (TH.decor === 'meadow') (function(){
       stem(fx + rr(-30,30), rr(170,300), rr(0.85,1.0), c*3+k+7, k % 3 !== 2, fg);
     fx += rr(78,150);
   }
+  /* a denser, taller drift across the middle, where the couple stand: the
+     hem and shoes read as being in the meadow rather than on top of it */
+  for(let i=0;i<26;i++)
+    stem(rr(255, 830), rr(250, 385), rr(0.9,1.0), i+11, i % 4 !== 3, fg);
 
   /* ---- butterflies, drifting ---- */
   for(let i=0;i<4;i++){
@@ -1067,7 +1088,7 @@ const CUES = {
   heroStar:['A',0.15], a1:['A',0.55], a2:['A',1.15],
   b0:['B',0.15], b1:['B',0.45], b2:['B',0.75], b2f:['B',0.75], b3:['B',0.60], b4:['B',1.15],
   c0:['C',0.20], c1:['C',0.55], c2:['C',1.15], c3:['C',1.35], c4:['C',1.60],
-  p0:['P',0.15], p1:['P',0.30], p2:['P',0.55],
+  p0:['P',0.15], p1:['P',0.30], p2:['P',0.55], p3:['P',0.20],
   d0:['D',0.15], d1:['D',0.35], d2:['D',0.45], d3:['D',0.55], d4:['D',0.70],
   d5:['D',0.95], d6:['D',1.25], d7:['D',1.45], d8:['D',1.65], d9:['D',1.90],
   e1:['E',0.15], e2:['E',0.60], e3:['E',0.80], e4:['E',1.20], e5:['E',1.40]
